@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cherry Creek, Denver — 150 Years by the Decade</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap');
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --creek-blue: #2B6CB0; --creek-dark: #1A365D; --creek-light: #BEE3F8;
+            --gold-rush: #D69E2E; --earth-brown: #7B341E; --forest-green: #276749;
+            --bg: #F7FAFC; --card-bg: #FFFFFF; --text: #2D3748; --text-light: #718096;
+        }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+
+        .hero {
+            background: linear-gradient(135deg, var(--creek-dark) 0%, var(--creek-blue) 50%, #4299E1 100%);
+            color: white; padding: 60px 40px 50px; text-align: center; position: relative; overflow: hidden;
+        }
+        .hero::before {
+            content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 80px;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 100'%3E%3Cpath fill='%23F7FAFC' d='M0,40 C360,100 720,0 1080,60 C1260,80 1380,50 1440,40 L1440,100 L0,100Z'/%3E%3C/svg%3E") no-repeat bottom;
+            background-size: cover;
+        }
+        .hero h1 { font-family: 'Playfair Display', serif; font-size: 3rem; font-weight: 700; margin-bottom: 10px; }
+        .hero p { font-size: 1.15rem; opacity: 0.9; max-width: 700px; margin: 0 auto; font-weight: 300; }
+
+        .stats-row {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px; max-width: 1200px; margin: -30px auto 40px; padding: 0 30px; position: relative; z-index: 2;
+        }
+        .stat-card { background: var(--card-bg); border-radius: 14px; padding: 24px 20px; text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+        .stat-number { font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 700; line-height: 1; }
+        .stat-label { font-size: 0.8rem; color: var(--text-light); margin-top: 6px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; }
+
+        .decade-nav {
+            position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,0.97); backdrop-filter: blur(10px);
+            border-bottom: 2px solid var(--creek-light); overflow-x: auto; padding: 0.6rem 1rem; text-align: center;
+        }
+        .decade-nav::-webkit-scrollbar { height: 3px; }
+        .decade-nav::-webkit-scrollbar-thumb { background: var(--creek-blue); }
+        .nav-inner { display: inline-flex; gap: 6px; min-width: max-content; }
+        .nav-btn {
+            padding: 6px 16px; border-radius: 30px; border: 2px solid #E2E8F0; background: white;
+            cursor: pointer; font-size: 0.8rem; font-weight: 500; color: var(--text-light); font-family: inherit; transition: all 0.2s;
+        }
+        .nav-btn:hover { border-color: var(--creek-blue); color: var(--creek-blue); }
+        .nav-btn.active { background: var(--creek-blue); border-color: var(--creek-blue); color: white; }
+
+        .decade { max-width: 1000px; margin: 0 auto; padding: 3rem 30px; border-bottom: 1px solid #E2E8F0; scroll-margin-top: 60px; }
+        .decade-header { margin-bottom: 2rem; }
+        .decade-header h2 { font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 700; color: var(--creek-dark); margin-bottom: 4px; }
+        .decade-header .intro { font-size: 0.95rem; color: var(--text-light); line-height: 1.8; }
+
+        .content-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 2rem; }
+        .content-card { background: var(--card-bg); border-radius: 14px; box-shadow: 0 4px 20px rgba(0,0,0,0.07); overflow: hidden; border-top: 4px solid var(--creek-blue); }
+        .content-card .card-body { padding: 20px; }
+        .content-card h3 { font-family: 'Playfair Display', serif; font-size: 1.15rem; margin-bottom: 8px; color: var(--creek-dark); }
+        .content-card p { font-size: 0.88rem; color: var(--text-light); line-height: 1.7; }
+        .card-tag { display: inline-block; padding: 3px 12px; border-radius: 20px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; }
+        .tag-food { background: #FEFCBF; color: #975A16; }
+        .tag-fashion { background: #E9D8FD; color: #553C9A; }
+
+        .demo-card { background: var(--card-bg); border-radius: 14px; padding: 24px; box-shadow: 0 4px 20px rgba(0,0,0,0.07); margin-bottom: 2rem; border-left: 5px solid var(--forest-green); }
+        .demo-card h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; margin-bottom: 14px; color: var(--creek-dark); }
+        .demo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .demo-item { display: flex; flex-direction: column; gap: 2px; }
+        .demo-label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-light); font-weight: 600; }
+        .demo-val { font-size: 0.88rem; color: var(--text); line-height: 1.5; }
+
+        .facts-card { background: var(--card-bg); border-radius: 14px; padding: 24px; box-shadow: 0 4px 20px rgba(0,0,0,0.07); margin-bottom: 1rem; border-left: 5px solid var(--gold-rush); }
+        .facts-card h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; margin-bottom: 12px; color: var(--creek-dark); }
+        .fact-item { display: flex; gap: 10px; padding: 6px 0; font-size: 0.88rem; color: var(--text-light); line-height: 1.6; }
+        .fact-item span:first-child { flex-shrink: 0; }
+
+        .themes-section { max-width: 1200px; margin: 3rem auto; padding: 0 30px; }
+        .themes-section h2 { font-family: 'Playfair Display', serif; font-size: 2rem; text-align: center; margin-bottom: 30px; color: var(--creek-dark); }
+        .themes-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
+        .theme-card { background: var(--card-bg); border-radius: 14px; padding: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.07); border-top: 5px solid; }
+        .theme-card h3 { font-family: 'Playfair Display', serif; font-size: 1.2rem; margin-bottom: 8px; }
+        .theme-card p { font-size: 0.88rem; color: var(--text-light); line-height: 1.7; }
+        .theme-icon { font-size: 2rem; margin-bottom: 12px; display: block; }
+
+        .map-section { max-width: 1200px; margin: 0 auto 3rem; padding: 0 30px; }
+        .map-section h2 { font-family: 'Playfair Display', serif; font-size: 2rem; text-align: center; margin-bottom: 20px; color: var(--creek-dark); }
+        .map-embed { border-radius: 14px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.1); height: 350px; }
+        .map-embed iframe { width: 100%; height: 100%; border: none; }
+
+        .qr-section { max-width: 600px; margin: 0 auto 3rem; padding: 0 30px; text-align: center; }
+        .qr-section h2 { font-family: 'Playfair Display', serif; font-size: 2rem; margin-bottom: 10px; color: var(--creek-dark); }
+        .qr-section p { font-size: 0.9rem; color: var(--text-light); margin-bottom: 20px; }
+        .qr-card { background: var(--card-bg); border-radius: 14px; padding: 40px 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); display: inline-block; }
+        .qr-card img { display: block; margin: 0 auto; border-radius: 8px; }
+        .qr-url { margin-top: 14px; font-size: 0.75rem; color: var(--text-light); word-break: break-all; font-family: monospace; }
+        .qr-note { margin-top: 16px; font-size: 0.78rem; color: var(--creek-blue); font-weight: 500; }
+
+        footer { background: var(--creek-dark); color: rgba(255,255,255,0.7); text-align: center; padding: 30px; font-size: 0.85rem; }
+        footer strong { color: white; }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2rem; }
+            .content-grid { grid-template-columns: 1fr; }
+            .demo-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<header class="hero">
+    <h1>Cherry Creek — 150 Years</h1>
+    <p>A celebration of free enterprise, self-reliance, and the pioneering spirit that built one of America's great Western communities</p>
+</header>
+
+<div class="stats-row">
+    <div class="stat-card"><div class="stat-number" style="color:var(--earth-brown)">1858</div><div class="stat-label">Founded by Pioneers</div></div>
+    <div class="stat-card"><div class="stat-number" style="color:var(--creek-blue)">150</div><div class="stat-label">Years of Growth</div></div>
+    <div class="stat-card"><div class="stat-number" style="color:var(--forest-green)">141 ft</div><div class="stat-label">Cherry Creek Dam</div></div>
+    <div class="stat-card"><div class="stat-number" style="color:var(--creek-blue)">40+ mi</div><div class="stat-label">Creek Trail Length</div></div>
+    <div class="stat-card"><div class="stat-number" style="color:#805AD5">713K</div><div class="stat-label">Denver Pop. (2020)</div></div>
+</div>
+
+<nav class="decade-nav"><div class="nav-inner" id="nav"></div></nav>
+
+<main id="main"></main>
+
+<section class="themes-section">
+    <h2>Enduring Values Across 150 Years</h2>
+    <div class="themes-grid">
+        <div class="theme-card" style="border-top-color:var(--gold-rush)"><span class="theme-icon">⛏️</span><h3>Free Enterprise & Opportunity</h3><p>From the Gold Rush prospectors who risked everything to the entrepreneurs who built Cherry Creek Shopping Center, free enterprise and individual initiative have driven Cherry Creek's prosperity for 150 years.</p></div>
+        <div class="theme-card" style="border-top-color:var(--earth-brown)"><span class="theme-icon">🏠</span><h3>Faith, Family & Community</h3><p>Churches, tight-knit families, and neighbor helping neighbor built Cherry Creek from the ground up. Through floods, depressions, and wars, strong families and faith communities held the area together.</p></div>
+        <div class="theme-card" style="border-top-color:var(--creek-blue)"><span class="theme-icon">🌊</span><h3>Taming the Frontier</h3><p>Cherry Creek's pioneers didn't wait for government — they built homes, businesses, and infrastructure through grit and determination. When floods threatened, they engineered solutions like the Cherry Creek Dam.</p></div>
+        <div class="theme-card" style="border-top-color:#805AD5"><span class="theme-icon">🛍️</span><h3>Commerce & Prosperity</h3><p>Private investment — not government programs — transformed Cherry Creek into a premier destination. From the 1953 shopping center to today's luxury district, the free market built this community.</p></div>
+        <div class="theme-card" style="border-top-color:#319795"><span class="theme-icon">🇺🇸</span><h3>Patriotism & Service</h3><p>Cherry Creek answered every call to serve — from WWI victory gardens to WWII war bonds to supporting Lowry and Buckley military bases. Love of country runs deep in this community.</p></div>
+        <div class="theme-card" style="border-top-color:var(--forest-green)"><span class="theme-icon">📈</span><h3>Growth Through Limited Government</h3><p>Colorado's low-tax, business-friendly environment attracted waves of entrepreneurs and families. Cherry Creek's success story is proof that economic freedom creates thriving communities.</p></div>
+    </div>
+</section>
+
+<section class="map-section">
+    <h2>Cherry Creek Area</h2>
+    <div class="map-embed">
+        <iframe src="https://www.openstreetmap.org/export/embed.html?bbox=-104.97%2C39.70%2C-104.92%2C39.73&layer=mapnik&marker=39.715%2C-104.953" allowfullscreen></iframe>
+    </div>
+</section>
+
+<section class="qr-section">
+    <h2>Share This Dashboard</h2>
+    <p>Scan the QR code below to view this Cherry Creek 150th Anniversary timeline on your phone</p>
+    <div class="qr-card">
+        <img id="qr-img" width="200" height="200" alt="QR Code">
+        <div class="qr-url" id="qr-url-display"></div>
+        <div class="qr-note">Scan with your phone camera to open</div>
+    </div>
+</section>
+
+<footer>
+    <p><strong>Cherry Creek 150th Anniversary Dashboard</strong> — Data compiled from Denver Public Library, Colorado Encyclopedia, History Colorado, U.S. Census Bureau & U.S. Army Corps of Engineers</p>
+</footer>
+
+<script>
+const D=[
+{
+  id:"1870s",year:"1870s",era:"The Pioneer Spirit",
+  intro:"Cherry Creek's story is the quintessential American story — bold individuals risking everything for a better life. When gold was discovered at the confluence of Cherry Creek and the South Platte in 1858, thousands of self-reliant pioneers headed West without government assistance. They built Denver from nothing through sheer grit and free enterprise. Colorado earned statehood in 1876, and Cherry Creek stood as a testament to what free men and women can accomplish.",
+  food:{title:"Frontier Self-Reliance",text:"Pioneer families fed themselves through hunting, foraging, and hard work. Hardtack, beans, salted pork, and sourdough bread sustained settlers who asked nothing from anyone. Cast iron cooking, wild game stew, and strong coffee fueled the men and women who tamed the frontier."},
+  fashion:{title:"Built for Work, Not Fashion",text:"Frontier clothing was practical and durable — built for the hard work of building a civilization from scratch. Men wore wool trousers, flannel shirts, and wide-brimmed hats. Women sewed their own calico dresses with aprons and sunbonnets. Nothing was wasted."},
+  demo:{pop:"~4,700 (Denver area)",communities:"Self-reliant pioneers and prospectors from across America seeking opportunity in the West",industries:"Gold mining, cattle ranching, frontier trading — all private enterprise",housing:"Log cabins, sod houses — built by hand with no government programs"},
+  facts:["Bold prospectors discovered gold at Cherry Creek in 1858 — no government directed them.","Colorado became the 38th state in 1876, the Centennial State, born alongside America's 100th birthday.","Early settlers built Denver through private initiative, not federal programs."]
+},
+{
+  id:"1880s",year:"1880s",era:"Free Enterprise Booms",
+  intro:"The free market transformed Cherry Creek from a frontier outpost into a thriving community. Silver mining created enormous private wealth, and entrepreneurs invested it in railroads, grand homes, and businesses — all without government direction. The railroad connected Denver to national markets, property values soared, and Victorian homes rose along tree-lined streets. This was capitalism at its finest.",
+  food:{title:"Prosperity Through Commerce",text:"Private enterprise brought abundance. Hotels and restaurants served oysters shipped by rail from the coast. Denver's first bakeries, butcher shops, and grocers opened near Cherry Creek — small businesses built by hardworking families investing their own capital."},
+  fashion:{title:"Victorian Prosperity",text:"Wealth earned through mining and commerce showed in refined dress. Successful mine owners wore tailored suits and silk ties. Women embraced elegant bustled skirts and high-collared blouses — the rewards of a free economy where hard work was honored."},
+  demo:{pop:"~35,600 (Denver, 1880 census)",communities:"Hardworking immigrant families (German, Irish, English) seeking the American Dream through honest labor",industries:"Silver mining, railroads, livestock, banking — private capital driving growth",housing:"Victorian homes and brick rowhouses built by private investment"},
+  facts:["Private railroad investment connected Denver to national markets, fueling massive growth.","Entrepreneurs — not government — built the grand Victorian homes that still stand today.","Denver's population quintupled in a decade thanks to free enterprise and opportunity."]
+},
+{
+  id:"1890s",year:"1890s",era:"Resilience Through Adversity",
+  intro:"The Silver Crash of 1893 proved that Cherry Creek's strength came from its people, not government bailouts. When silver prices collapsed, families and businesses adapted, diversified, and rebuilt through their own efforts. Denver's Brown Palace Hotel — a monument to private enterprise — opened in 1892 and still stands. Communities relied on churches and mutual aid, not federal handouts.",
+  food:{title:"Thrift & Self-Sufficiency",text:"Families tightened belts and grew their own food during hard times. Home gardens, church suppers, and community barn-raisings sustained the neighborhood. The Brown Palace Hotel continued serving fine dining — proof that quality businesses survive any downturn."},
+  fashion:{title:"Elegance Earned, Not Given",text:"Victorian fashion reflected the rewards of hard work. Fine fabrics, corseted waists, and tailored suits for those who had earned them. Working families dressed modestly and practically, teaching children the value of saving and self-reliance."},
+  demo:{pop:"~106,700 (Denver, 1890 census)",communities:"Diverse immigrant communities (German, Irish, Scandinavian) united by shared values of hard work, faith, and family",industries:"Mining (adapting after crash), railroads, meatpacking, private tourism",housing:"Queen Anne Victorians built by successful entrepreneurs; worker cottages for aspiring families"},
+  facts:["Cherry Creek survived the 1893 Silver Crash through private resilience, not government bailouts.","Churches and mutual aid societies — not welfare programs — helped families through hard times.","The Brown Palace Hotel (1892) stands as a monument to private enterprise."]
+},
+{
+  id:"1900s",year:"1900s",era:"American Innovation",
+  intro:"American ingenuity electrified Cherry Creek — literally. Private utility companies brought electric streetlights and trolley lines. Entrepreneurs opened soda fountains, bakeries, and grocers that became community gathering spots. Colorado women had earned the right to vote in 1893 through the democratic process, decades before the federal amendment — proving that state sovereignty and local governance work.",
+  food:{title:"Small Business Main Street",text:"Family-owned soda fountains, bakeries, and grocers became the heart of Cherry Creek. Home canning and preserving meant families provided for themselves year-round. Apple pie, the quintessential American dessert, symbolized the values of home and hearth."},
+  fashion:{title:"Edwardian Respectability",text:"Clothing reflected traditional values. Women wore modest tea gowns, high collars, and picture hats. Men dressed in proper sack suits and straw boaters. Ready-made clothing from Sears catalogs — a private enterprise innovation — made respectable dress accessible to all."},
+  demo:{pop:"~133,800 (Denver, 1900 census)",communities:"Hardworking immigrant families (Italian, Greek, Eastern European) building the American Dream; strong church communities",industries:"Meatpacking, agriculture, manufacturing — private sector job creation",housing:"Craftsman bungalows and Denver Squares — the American Dream of homeownership"},
+  facts:["Colorado granted women's suffrage in 1893 through state action — no federal mandate needed.","Private utility companies brought electricity and trolleys to Cherry Creek.","Small business owners — not government — built the vibrant Main Street economy."]
+},
+{
+  id:"1910s",year:"1910s",era:"Patriotism & Sacrifice",
+  intro:"When America entered World War I, Cherry Creek answered the call without hesitation. Families planted victory gardens, conserved food, and sacrificed for the war effort — voluntarily, out of love for country. Colorado sent thousands of brave troops overseas. The automobile, a triumph of American private industry, began transforming Cherry Creek's streets.",
+  food:{title:"Patriotic Conservation",text:"'Food Will Win the War' inspired voluntary sacrifice. Families planted victory gardens, ate cornbread to save wheat, and preserved food for the troops. This was patriotic self-sacrifice — Americans choosing to give, not being forced by government."},
+  fashion:{title:"Practical Patriotism",text:"Wartime brought simpler, practical clothing reflecting the national spirit of sacrifice and service. Military uniforms influenced civilian fashion with structured shoulders and khaki tones. Women entering the workforce dressed modestly and practically."},
+  demo:{pop:"~213,400 (Denver, 1910 census)",communities:"Patriotic Americans of all backgrounds united behind the flag; strong church attendance and civic organizations",industries:"Agriculture, auto industry (private innovation), wartime production",housing:"Bungalows and foursquares — homeownership as the foundation of stable communities"},
+  facts:["Colorado proudly sent thousands of troops to serve in WWI — duty, honor, country.","Victory gardens exemplified voluntary patriotic sacrifice, not government mandates.","Henry Ford's automobile — private enterprise genius — transformed Cherry Creek streets."]
+},
+{
+  id:"1920s",year:"1920s",era:"Prosperity & Traditional Values",
+  intro:"The Roaring Twenties brought unprecedented prosperity through free market capitalism. Construction boomed, movie palaces opened, and Cherry Creek thrived. While some experimented with looser morals, traditional families and churches remained the bedrock of the community. The era proved that economic freedom creates prosperity for all.",
+  food:{title:"Abundance Through Free Markets",text:"Free enterprise filled American tables. Canned goods, refrigeration, and national food brands — all private innovations — made more food available to more people than ever before. Family dinners remained the center of home life."},
+  fashion:{title:"Tradition Meets Modernity",text:"Fashion evolved but traditional values endured. While flappers grabbed headlines, most Cherry Creek families dressed modestly and raised their children with strong values. Sunday best for church remained a community tradition."},
+  demo:{pop:"~256,500 (Denver, 1920 census)",communities:"Growing families anchored by churches, civic clubs, and traditional values; strong neighborhood bonds",industries:"Construction, entertainment, oil exploration — private capital creating jobs",housing:"Tudor Revivals, family homes — the American Dream of property ownership"},
+  facts:["Private construction investment reshaped Cherry Creek's skyline during the boom.","Churches and civic organizations remained the backbone of community life.","Free market prosperity lifted living standards for families across Cherry Creek."]
+},
+{
+  id:"1930s",year:"1930s",era:"Character Forged in Hardship",
+  intro:"The Great Depression tested Cherry Creek, but the community's character shone through. Families relied on each other, churches, and local charity — not distant bureaucracies. The 1933 Castlewood Dam failure sent a wall of water through Denver, but telephone operator Nettie Driskill's personal heroism — warning thousands on her own initiative — saved an estimated 5,000 lives. Individual courage, not government, saved the day.",
+  food:{title:"Making Do With Dignity",text:"Families stretched every penny through ingenuity and hard work, not government dependence. Home gardens, church dinners, and neighbor helping neighbor sustained the community. Women's creativity in the kitchen — turning scraps into meals — exemplified American resourcefulness."},
+  fashion:{title:"Dignity in Hard Times",text:"Families maintained their dignity through careful thrift. Women sewed beautiful dresses from flour sacks — a triumph of American resourcefulness. Clothing was mended and passed down. Sunday best was maintained for church no matter how tight the budget."},
+  demo:{pop:"~287,900 (Denver, 1930 census)",communities:"Tight-knit families and churches sustaining each other through mutual aid and voluntary charity",industries:"Agriculture, local small business persevering through the downturn",housing:"Families held onto homes through sacrifice; churches and charities helped those in need"},
+  facts:["Nettie Driskill's individual heroism during the 1933 dam failure saved 5,000 lives.","Churches and local charities — not federal programs — were the first responders to community need.","American families showed their character: self-reliance, thrift, and helping neighbors."]
+},
+{
+  id:"1940s",year:"1940s",era:"The Greatest Generation",
+  intro:"The Greatest Generation answered freedom's call. Cherry Creek families sent their sons and daughters to fight tyranny in WWII while those at home sacrificed willingly — rationing food, planting Victory Gardens, buying war bonds. Lowry Air Force Base and Buckley Field brought military excellence to Denver. The Army Corps built the 141-foot Cherry Creek Dam, protecting the city for generations. America won because free people chose to fight.",
+  food:{title:"Voluntary Sacrifice for Freedom",text:"Americans rationed willingly — not because government forced them, but because they loved their country. Victory Gardens produced 40% of the nation's vegetables. Families shared recipes and resources, united by patriotic duty and love of freedom."},
+  fashion:{title:"Service & Sacrifice",text:"Military uniforms represented honor, duty, and service to the greatest nation on earth. Women who entered factories wore practical coveralls with pride — supporting the war effort through hard work. The American spirit of sacrifice defined the era."},
+  demo:{pop:"~322,400 (Denver, 1940 census)",communities:"A united nation: Americans of all backgrounds serving together, bound by love of country and freedom",industries:"Military bases (Lowry, Buckley), defense manufacturing — the Arsenal of Democracy",housing:"Post-war housing boom — GI Bill rewarding veterans who earned it through service"},
+  facts:["Cherry Creek Dam (141 ft, 14,300 ft long) built 1946-1950 — American engineering excellence.","Cherry Creek families bought war bonds, ran scrap drives, and served at USO dances.","The Greatest Generation's sacrifice preserved freedom for future generations."]
+},
+{
+  id:"1950s",year:"1950s",era:"The American Dream",
+  intro:"The 1950s were the golden age of the American Dream in Cherry Creek. Veterans who had earned their benefits through military service bought homes and raised families. Cherry Creek Shopping Center opened in 1953 — a private enterprise triumph built on land entrepreneur Temple Hoyne Buell had the foresight to purchase in 1925. Cherry Creek State Park opened in 1959 as Colorado's first. America was prosperous, families were strong, and communities thrived.",
+  food:{title:"Prosperity at the Family Table",text:"Free enterprise brought abundance to every American table. Drive-in restaurants, TV dinners, backyard barbecues — all products of private innovation and entrepreneurship. The family dinner table remained sacred, bringing families together every evening."},
+  fashion:{title:"Respectability & Tradition",text:"Americans dressed with pride and self-respect. Women wore elegant cinched waists and full skirts. Men dressed sharply for work and church. Teenagers respected their elders while developing their own clean-cut style. Appearance reflected values."},
+  demo:{pop:"~415,800 (Denver, 1950 census); suburban growth through private development",communities:"Strong nuclear families; active churches; civic organizations like Rotary, Lions, VFW thriving",industries:"Aerospace, federal agencies, retail (Cherry Creek Shopping Center 1953), oil — private sector strength",housing:"Suburban ranch homes — hardworking families achieving the American Dream of homeownership"},
+  facts:["Cherry Creek Shopping Center opened 1953 — built by private enterprise, not government.","Cherry Creek State Park opened 1959 — Colorado's first, 4,200 acres of natural beauty.","The 1950s represented the peak of the American nuclear family and community values."]
+},
+{
+  id:"1960s",year:"1960s",era:"Tradition Under Pressure",
+  intro:"The 1960s brought cultural upheaval, but Cherry Creek's traditional families and institutions held firm. While counterculture movements challenged authority and traditional values elsewhere, Cherry Creek's churches, businesses, and families remained strong. The shopping district expanded through private investment, proving that free enterprise continued to build prosperity even in turbulent times.",
+  food:{title:"American Abundance Continues",text:"Free market innovation continued expanding American food choices. New restaurants and specialty shops opened through private investment. While some embraced fads, traditional American home cooking — roasts, casseroles, and family dinners — remained the backbone of Cherry Creek life."},
+  fashion:{title:"Values Amid Change",text:"While radical fashion made headlines, most Cherry Creek families maintained traditional, respectable dress. Church attendance remained high, and Sunday best continued to matter. Style evolved naturally through the free market, not through political statements."},
+  demo:{pop:"~514,700 (Denver, 1960 — peak city population)",communities:"Traditional families and churches providing stability during cultural change; strong civic organizations",industries:"Aerospace, defense (Martin Marietta), retail expansion — private sector creating jobs",housing:"Family homes and Cherry Creek's first quality apartments — private development meeting demand"},
+  facts:["Cherry Creek Shopping Center expanded through private investment, not government spending.","Traditional families and churches provided stability during a decade of national upheaval.","Private enterprise continued creating jobs and prosperity throughout the decade."]
+},
+{
+  id:"1970s",year:"1970s",era:"Energy Independence & Growth",
+  intro:"Colorado's energy industry boomed, bringing prosperity and jobs to Cherry Creek through private enterprise. The ski industry — built by entrepreneurial vision, not government programs — made Denver a world-class destination. Fred Wolfe's private vision for the Cherry Creek Trail took shape. The Denver Broncos united the community around shared pride and patriotism.",
+  food:{title:"Free Market Food Revolution",text:"American entrepreneurs revolutionized dining with new restaurant concepts. Fast food chains created millions of jobs through private enterprise. Health food stores opened as free market choice — not government mandate — gave consumers more options than ever."},
+  fashion:{title:"American Individualism",text:"Fashion expressed American individualism and freedom of choice. Whether disco or denim, Americans dressed as they pleased — a freedom people behind the Iron Curtain could only dream of. The free market offered endless choices."},
+  demo:{pop:"~514,600 (Denver stabilizing); metro 1.2M — suburban growth through private development",communities:"Patriotic families rallying around the Broncos; church communities strong; neighborhood pride",industries:"Oil & gas (private energy production), ski tourism, construction — free enterprise at work",housing:"Condos and homes built by private developers meeting market demand"},
+  facts:["Colorado's energy industry created thousands of private sector jobs in Cherry Creek.","The Denver Broncos' Orange Crush united the community around patriotism and pride.","Private entrepreneurs — not government planners — built Colorado's world-class ski industry."]
+},
+{
+  id:"1980s",year:"1980s",era:"Reagan-Era Prosperity",
+  intro:"The Reagan era brought renewed American confidence and prosperity. Tax cuts and deregulation fueled Cherry Creek North's emergence as a premier shopping and arts district. Entrepreneurs and small business owners thrived as government got out of the way. The fully enclosed Cherry Creek Shopping Center opened in 1990 — a cathedral of free enterprise and consumer choice.",
+  food:{title:"Entrepreneurial Dining",text:"Deregulation and low taxes allowed restaurant entrepreneurs to flourish. Sushi bars, wine shops, and nouvelle cuisine — all products of free enterprise and risk-taking. Cherry Creek's restaurant row emerged as business owners invested their own capital."},
+  fashion:{title:"Power & Success",text:"Power suits and sharp dressing reflected the Reagan-era confidence in American capitalism. Success was celebrated, not demonized. Hard work, ambition, and achievement were the values of the era — and Cherry Creek embodied them all."},
+  demo:{pop:"~492,400 (Denver proper); metro ~1.6M",communities:"Entrepreneurial professionals investing in Cherry Creek; strong business associations and chambers of commerce",industries:"Oil & gas, real estate, finance, art galleries — private capital and entrepreneurship",housing:"Cherry Creek North boutique district; luxury condos — the market meeting demand for quality"},
+  facts:["Reagan-era tax cuts and deregulation fueled Cherry Creek North's business growth.","The enclosed Cherry Creek mall opened 1990 — a $300M private investment.","Entrepreneurs and small business owners, not government, built Cherry Creek into a premier district."]
+},
+{
+  id:"1990s",year:"1990s",era:"Tech Boom & Free Markets",
+  intro:"The dot-com boom proved once again that private enterprise and American innovation create prosperity. Tech entrepreneurs and telecom companies brought new wealth and jobs to Cherry Creek — without government central planning. Denver International Airport opened through public-private partnership. Coors Field revitalized downtown through the power of private sports investment.",
+  food:{title:"Innovation & Choice",text:"The free market gave Americans more food choices than any nation in history. Coffee shops, fusion restaurants, and celebrity chefs — all driven by consumer choice and entrepreneurial vision. The Food Network (1993) celebrated American food entrepreneurship."},
+  fashion:{title:"Market-Driven Style",text:"Fashion reflected individual freedom and market choice. From grunge to minimalism, Americans chose their own style in the world's freest consumer market. Sneaker culture and hip-hop fashion showed capitalism's ability to serve every community."},
+  demo:{pop:"~467,600 (Denver 1990); metro ~2.1M — growth driven by business-friendly climate",communities:"Tech professionals and entrepreneurs choosing Colorado for its low taxes and quality of life",industries:"Tech (dot-com boom), telecom, aerospace — innovation thriving in a free market",housing:"Cherry Creek lofts and luxury renovations — private development meeting market demand"},
+  facts:["Private tech entrepreneurs — not government — drove the dot-com era prosperity.","Coors Field (1995) revitalized downtown through private sports investment.","Colorado's business-friendly, low-tax environment attracted waves of entrepreneurs."]
+},
+{
+  id:"2000s",year:"2000s",era:"Entrepreneurial Renaissance",
+  intro:"Colorado's entrepreneurial spirit produced a craft beer revolution, farm-to-table dining, and artisan culture — all through private enterprise and consumer choice, not government programs. The Cherry Creek Trail expanded into a beloved 40-mile corridor. Property values rose as families chose Cherry Creek for its quality of life, strong schools, and safe neighborhoods.",
+  food:{title:"Artisan Free Enterprise",text:"Craft breweries, farmers markets, and artisan bakeries exploded — thousands of small business owners pursuing the American Dream. Local and organic went mainstream through consumer choice, not government mandates. Colorado led the nation in entrepreneurial food culture."},
+  fashion:{title:"Individual Expression",text:"Fashion continued to reflect the freedom of American consumer choice. From Y2K flash to bohemian style, the free market offered something for everyone. Cherry Creek boutiques thrived as independent business owners served discerning customers."},
+  demo:{pop:"~554,600 (Denver 2000); metro ~2.6M",communities:"Families choosing Cherry Creek for excellent schools, safe streets, and quality of life; active neighborhood associations",industries:"Craft brewing, tech, energy, real estate — entrepreneurship flourishing",housing:"Luxury condos and quality homes — property values reflecting desirable community; Cherry Creek ~$500K+"},
+  facts:["Colorado's craft beer revolution was pure free enterprise — hundreds of small business owners.","The Cherry Creek Trail expanded to 40+ miles — a beloved community asset.","Property values rose as families voted with their feet for Cherry Creek's quality of life."]
+},
+{
+  id:"2010s",year:"2010s",era:"Growth & Prosperity",
+  intro:"Cherry Creek boomed as families and businesses continued choosing Colorado for its business-friendly climate, natural beauty, and quality of life. The skyline transformed with private mixed-use developments. Colorado's entrepreneurial spirit remained strong, though rising regulation and taxes began threatening the business climate that had made the state successful.",
+  food:{title:"Food Entrepreneurship",text:"Food trucks, avocado toast cafes, and farm-to-table restaurants — thousands of entrepreneurs creating jobs and serving communities. Plant-based options emerged through consumer demand and market innovation, not government mandates."},
+  fashion:{title:"Market Freedom",text:"Athleisure, sustainable fashion, and sneaker culture all emerged through free market innovation and consumer choice. Cherry Creek boutiques adapted and thrived, demonstrating the market's ability to evolve and serve changing tastes."},
+  demo:{pop:"~600,200 (Denver 2010); metro ~2.9M — rapid growth",communities:"Diverse professionals and families attracted by opportunity; Cherry Creek median income ~$110K reflecting achievement",industries:"Tech startups, tourism, real estate, craft food & beverage — free enterprise thriving",housing:"Mixed-use developments built by private investment; Cherry Creek ~$800K+ reflecting market demand"},
+  facts:["Private developers — not government — transformed Cherry Creek's skyline.","Colorado's growth was driven by people choosing freedom and opportunity.","Small business entrepreneurship continued to be Cherry Creek's economic engine."]
+},
+{
+  id:"2020s",year:"2020s",era:"The Road Ahead",
+  intro:"COVID-19 tested Cherry Creek once again, and once again, the community's resilience — rooted in strong families, churches, small businesses, and individual determination — carried the day. Businesses adapted, families endured, and Cherry Creek emerged stronger. In 2024, the Cherry Creek West development was approved — private investment transforming the area for the next generation. The next 150 years will be built, as always, by free people pursuing the American Dream.",
+  food:{title:"Resilience & Adaptation",text:"Cherry Creek's restaurants and small businesses survived COVID through entrepreneurial grit — pivoting to outdoor dining, delivery, and takeout without waiting for government to save them. The restaurant scene rebounded stronger than ever, proving free enterprise's resilience."},
+  fashion:{title:"Freedom of Choice",text:"Americans dressed as they pleased — comfort, sustainability, or style. Thrift shopping boomed as consumers made smart economic choices. Cherry Creek boutiques adapted to market demand, proving once again that free enterprise serves customers best."},
+  demo:{pop:"~713,200 (Denver 2020 census); metro ~3.3M",communities:"Hardworking families and entrepreneurs continuing the pioneer tradition; Cherry Creek median income ~$130K",industries:"Tech, energy, hospitality, healthcare — private sector driving recovery and growth",housing:"Quality development through private investment; Cherry Creek ~$1M+ reflecting premium community"},
+  facts:["Cherry Creek West (2024) — massive private investment transforming the neighborhood's future.","Small businesses survived COVID through American entrepreneurial grit and determination.","Cherry Creek celebrates 150 years in 2026 — built by free people, not government programs."]
+}
+];
+
+const nav=document.getElementById('nav');
+D.forEach(d=>{
+  const b=document.createElement('button');
+  b.className='nav-btn';b.textContent=d.year;b.dataset.id=d.id;
+  b.onclick=()=>document.getElementById(d.id).scrollIntoView({behavior:'smooth'});
+  nav.appendChild(b);
+});
+
+const main=document.getElementById('main');
+D.forEach(d=>{
+  const dm=d.demo;
+  const s=document.createElement('section');
+  s.className='decade';s.id=d.id;
+  s.innerHTML=`
+    <div class="decade-header">
+      <h2>${d.year} — ${d.era}</h2>
+      <div class="intro">${d.intro}</div>
+    </div>
+    <div class="content-grid">
+      <div class="content-card" style="border-top-color:var(--gold-rush)">
+        <div class="card-body">
+          <span class="card-tag tag-food">Food & Dining</span>
+          <h3>${d.food.title}</h3>
+          <p>${d.food.text}</p>
+        </div>
+      </div>
+      <div class="content-card" style="border-top-color:#805AD5">
+        <div class="card-body">
+          <span class="card-tag tag-fashion">Fashion & Style</span>
+          <h3>${d.fashion.title}</h3>
+          <p>${d.fashion.text}</p>
+        </div>
+      </div>
+    </div>
+    <div class="demo-card">
+      <h3>📊 Demographics — ${d.year}</h3>
+      <div class="demo-grid">
+        <div class="demo-item"><span class="demo-label">Population</span><span class="demo-val">${dm.pop}</span></div>
+        <div class="demo-item"><span class="demo-label">Communities</span><span class="demo-val">${dm.communities}</span></div>
+        <div class="demo-item"><span class="demo-label">Key Industries</span><span class="demo-val">${dm.industries}</span></div>
+        <div class="demo-item"><span class="demo-label">Housing</span><span class="demo-val">${dm.housing}</span></div>
+      </div>
+    </div>
+    <div class="facts-card">
+      <h3>📌 Key Events</h3>
+      ${d.facts.map(f=>`<div class="fact-item"><span>→</span><span>${f}</span></div>`).join('')}
+    </div>`;
+  main.appendChild(s);
+});
+
+const obs=new IntersectionObserver(es=>{
+  es.forEach(e=>{
+    if(e.isIntersecting){
+      document.querySelectorAll('.nav-btn').forEach(b=>
+        b.classList.toggle('active',b.dataset.id===e.target.id));
+    }
+  });
+},{threshold:.2});
+document.querySelectorAll('.decade').forEach(s=>obs.observe(s));
+
+if(location.hash){
+  setTimeout(()=>{
+    const el=document.querySelector(location.hash);
+    if(el)el.scrollIntoView({behavior:'smooth'});
+  },200);
+}
+
+// ============================================================
+// QR CODE — Change this URL to wherever you host the file
+// ============================================================
+const QR_URL = "https://your-hosted-url-here.com/cherry-creek";
+// ▲▲▲ REPLACE the URL above with your real hosted link ▲▲▲
+
+const qrImg = document.getElementById('qr-img');
+const qrUrlDisplay = document.getElementById('qr-url-display');
+qrImg.src = "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=" + encodeURIComponent(QR_URL) + "&format=png&margin=10";
+qrUrlDisplay.textContent = QR_URL;
+</script>
+</body>
+</html>
