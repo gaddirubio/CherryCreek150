@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cherry Creek, Denver — History & Timeline Dashboard</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --creek-blue: #2B6CB0;
+            --creek-dark: #1A365D;
+            --creek-light: #BEE3F8;
+            --gold-rush: #D69E2E;
+            --earth-brown: #7B341E;
+            --forest-green: #276749;
+            --flood-red: #C53030;
+            --sand: #FEFCBF;
+            --bg: #F7FAFC;
+            --card-bg: #FFFFFF;
+            --text: #2D3748;
+            --text-light: #718096;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        /* ── HERO ── */
+        .hero {
+            background: linear-gradient(135deg, var(--creek-dark) 0%, var(--creek-blue) 50%, #4299E1 100%);
+            color: white;
+            padding: 60px 40px 50px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 80px;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 100'%3E%3Cpath fill='%23F7FAFC' d='M0,40 C360,100 720,0 1080,60 C1260,80 1380,50 1440,40 L1440,100 L0,100Z'/%3E%3C/svg%3E") no-repeat bottom;
+            background-size: cover;
+        }
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            letter-spacing: -0.5px;
+        }
+        .hero p {
+            font-size: 1.15rem;
+            opacity: 0.9;
+            max-width: 700px;
+            margin: 0 auto;
+            font-weight: 300;
+        }
+
+        /* ── STATS ROW ── */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: -30px auto 40px;
+            padding: 0 30px;
+            position: relative;
+            z-index: 2;
+        }
+        .stat-card {
+            background: var(--card-bg);
+            border-radius: 14px;
+            padding: 24px 20px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            transition: transform 0.2s;
+        }
+        .stat-card:hover { transform: translateY(-4px); }
+        .stat-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            line-height: 1;
+        }
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-top: 6px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* ── FILTER TABS ── */
+        .filter-section {
+            max-width: 1200px;
+            margin: 0 auto 30px;
+            padding: 0 30px;
+            text-align: center;
+        }
+        .filter-section h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: var(--creek-dark);
+        }
+        .filter-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+        .filter-tab {
+            padding: 8px 20px;
+            border-radius: 30px;
+            border: 2px solid #E2E8F0;
+            background: white;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.2s;
+            color: var(--text-light);
+        }
+        .filter-tab:hover { border-color: var(--creek-blue); color: var(--creek-blue); }
+        .filter-tab.active {
+            background: var(--creek-blue);
+            border-color: var(--creek-blue);
+            color: white;
+        }
+
+        /* ── TIMELINE ── */
+        .timeline-container {
+            max-width: 1000px;
+            margin: 0 auto 60px;
+            padding: 0 30px;
+            position: relative;
+        }
+        .timeline-line {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(to bottom, var(--creek-light), var(--creek-blue), var(--creek-dark));
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+        .timeline-item {
+            position: relative;
+            width: 45%;
+            padding: 20px;
+            margin-bottom: 30px;
+            opacity: 1;
+            transform: translateY(0);
+            transition: all 0.5s ease;
+        }
+        .timeline-item.left { margin-right: auto; text-align: right; }
+        .timeline-item.right { margin-left: auto; text-align: left; }
+
+        .timeline-card {
+            background: var(--card-bg);
+            border-radius: 14px;
+            padding: 24px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+            position: relative;
+            border-left: 4px solid transparent;
+            overflow: hidden;
+        }
+        .timeline-image {
+            margin: -24px -24px 16px -24px;
+            position: relative;
+            background: #1A202C;
+        }
+        .timeline-image img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            display: block;
+        }
+        .timeline-credit {
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.75), transparent);
+            color: rgba(255,255,255,0.85);
+            font-size: 0.65rem;
+            padding: 16px 12px 8px;
+            text-align: left;
+            line-height: 1.4;
+        }
+        .timeline-credit a { color: #BEE3F8; text-decoration: none; }
+        .timeline-credit a:hover { text-decoration: underline; }
+        .timeline-item.left .timeline-credit { text-align: right; }
+        .timeline-item.right .timeline-card { border-left: 4px solid var(--creek-blue); }
+        .timeline-item.left .timeline-card { border-right: 4px solid var(--creek-blue); border-left: none; }
+
+        .timeline-dot {
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--creek-blue);
+            border: 4px solid var(--bg);
+            box-shadow: 0 0 0 2px var(--creek-blue);
+            top: 30px;
+            z-index: 2;
+        }
+        .timeline-item.left .timeline-dot { right: -39px; }
+        .timeline-item.right .timeline-dot { left: -39px; }
+
+        .timeline-year {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+        .timeline-title {
+            font-size: 1.05rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--creek-dark);
+        }
+        .timeline-desc {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            line-height: 1.7;
+        }
+        .timeline-tag {
+            display: inline-block;
+            padding: 3px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 10px;
+        }
+
+        /* Tag colors by category */
+        .tag-origins { background: #FEFCBF; color: #975A16; }
+        .tag-flood { background: #FED7D7; color: #9B2C2C; }
+        .tag-infrastructure { background: #C6F6D5; color: #276749; }
+        .tag-commerce { background: #E9D8FD; color: #553C9A; }
+        .tag-recreation { background: #B2F5EA; color: #234E52; }
+        .tag-indigenous { background: #FEEBC8; color: #7B341E; }
+        .tag-modern { background: #BEE3F8; color: #2A4365; }
+        .tag-untold { background: #1A202C; color: #F7FAFC; }
+        .tag-injustice { background: #F687B3; color: #702459; }
+
+        /* Dot colors */
+        .dot-origins { background: var(--gold-rush); box-shadow: 0 0 0 2px var(--gold-rush); }
+        .dot-flood { background: var(--flood-red); box-shadow: 0 0 0 2px var(--flood-red); }
+        .dot-infrastructure { background: var(--forest-green); box-shadow: 0 0 0 2px var(--forest-green); }
+        .dot-commerce { background: #805AD5; box-shadow: 0 0 0 2px #805AD5; }
+        .dot-recreation { background: #319795; box-shadow: 0 0 0 2px #319795; }
+        .dot-indigenous { background: var(--earth-brown); box-shadow: 0 0 0 2px var(--earth-brown); }
+        .dot-modern { background: var(--creek-blue); box-shadow: 0 0 0 2px var(--creek-blue); }
+        .dot-untold { background: #1A202C; box-shadow: 0 0 0 2px #1A202C; }
+        .dot-injustice { background: #B83280; box-shadow: 0 0 0 2px #B83280; }
+
+        /* ── KEY THEMES SECTION ── */
+        .themes-section {
+            max-width: 1200px;
+            margin: 0 auto 60px;
+            padding: 0 30px;
+        }
+        .themes-section h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 30px;
+            color: var(--creek-dark);
+        }
+        .themes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+        }
+        .theme-card {
+            background: var(--card-bg);
+            border-radius: 14px;
+            padding: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+            border-top: 5px solid;
+            transition: transform 0.2s;
+        }
+        .theme-card:hover { transform: translateY(-4px); }
+        .theme-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+        }
+        .theme-card p {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            line-height: 1.7;
+        }
+        .theme-icon {
+            font-size: 2rem;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        /* ── MAP PLACEHOLDER ── */
+        .map-section {
+            max-width: 1200px;
+            margin: 0 auto 60px;
+            padding: 0 30px;
+        }
+        .map-section h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 20px;
+            color: var(--creek-dark);
+        }
+        .map-embed {
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            height: 400px;
+        }
+        .map-embed iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* ── FOOTER ── */
+        footer {
+            background: var(--creek-dark);
+            color: rgba(255,255,255,0.7);
+            text-align: center;
+            padding: 30px;
+            font-size: 0.85rem;
+        }
+        footer strong { color: white; }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2rem; }
+            .timeline-line { left: 20px; }
+            .timeline-item { width: calc(100% - 50px); margin-left: 50px !important; margin-right: 0 !important; text-align: left !important; }
+            .timeline-item .timeline-card { border-left: 4px solid var(--creek-blue) !important; border-right: none !important; }
+            .timeline-dot { left: -39px !important; right: auto !important; }
+            .themes-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ══ HERO ══ -->
+<header class="hero">
+    <h1>Cherry Creek, Denver</h1>
+    <p>150 Years of History &amp; the Untold Stories — from Indigenous homelands and Black community resilience to the luxury district of today</p>
+</header>
+
+<!-- ══ STATS ══ -->
+<div class="stats-row">
+    <div class="stat-card">
+        <div class="stat-number" style="color:var(--earth-brown)">1858</div>
+        <div class="stat-label">Denver Founded at Creek</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-number" style="color:var(--flood-red)">2</div>
+        <div class="stat-label">Major Floods (1864 & 1933)</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-number" style="color:var(--forest-green)">141 ft</div>
+        <div class="stat-label">Cherry Creek Dam Height</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-number" style="color:var(--creek-blue)">40+ mi</div>
+        <div class="stat-label">Cherry Creek Trail Length</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-number" style="color:#805AD5">4,200</div>
+        <div class="stat-label">Acres — State Park</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-number" style="color:#9B2C2C">48+</div>
+        <div class="stat-label">Tribal Nations Tied to the Land</div>
+    </div>
+</div>
+
+<!-- ══ FILTERS + TIMELINE ══ -->
+<section class="filter-section">
+    <h2>Interactive Timeline</h2>
+    <div class="filter-tabs">
+        <button class="filter-tab active" data-filter="all">All Events</button>
+        <button class="filter-tab" data-filter="indigenous">Indigenous Heritage</button>
+        <button class="filter-tab" data-filter="origins">Gold Rush & Origins</button>
+        <button class="filter-tab" data-filter="flood">Floods & Disasters</button>
+        <button class="filter-tab" data-filter="infrastructure">Infrastructure</button>
+        <button class="filter-tab" data-filter="commerce">Commerce</button>
+        <button class="filter-tab" data-filter="recreation">Recreation</button>
+        <button class="filter-tab" data-filter="untold">Black Cherry Creek</button>
+        <button class="filter-tab" data-filter="injustice">Treaties &amp; Injustice</button>
+        <button class="filter-tab" data-filter="modern">Modern Era</button>
+    </div>
+</section>
+
+<div class="timeline-container">
+    <div class="timeline-line"></div>
+    <!-- Timeline items injected by JS -->
+</div>
+
+<!-- ══ UNTOLD STORY SPOTLIGHT ══ -->
+<section class="themes-section" style="background: linear-gradient(135deg, #1A202C 0%, #2D3748 100%); border-radius: 18px; padding: 50px 40px; color: white; max-width: 1140px;">
+    <h2 style="color: white;">The Untold Story: Black Cherry Creek</h2>
+    <p style="text-align: center; max-width: 800px; margin: 0 auto 30px; opacity: 0.85; font-size: 1.05rem; line-height: 1.7;">
+        Long before luxury boutiques and brunch, Cherry Creek was home to a thriving Black community — built on flood-prone land next to the city dump, the only place segregation allowed Black families to buy property. Their story has been largely erased from the neighborhood's marketed identity.
+    </p>
+    <div class="themes-grid" style="margin-top: 30px;">
+        <div class="theme-card" style="background: rgba(255,255,255,0.06); border-top-color: #F687B3; color: white;">
+            <span class="theme-icon">🏘️</span>
+            <h3 style="color: white;">Land Nobody Else Wanted</h3>
+            <p style="color: rgba(255,255,255,0.75);">South of 1st Avenue, the land flooded, smelled of the city dump, and was passed over by white Denver. For Black families excluded by racial covenants, that affordability meant a rare path to homeownership.</p>
+        </div>
+        <div class="theme-card" style="background: rgba(255,255,255,0.06); border-top-color: #F687B3; color: white;">
+            <span class="theme-icon">👥</span>
+            <h3 style="color: white;">The Families</h3>
+            <p style="color: rgba(255,255,255,0.75);">The Jacksons, Scotts, Morrisons, and Robinsons. Nancelia Jackson (1926). Judge Gary Jackson, Warren Scott, Trudi Morrison, Cleo Parker Robinson. Names preserved through oral histories on CPR and Denverite.</p>
+        </div>
+        <div class="theme-card" style="background: rgba(255,255,255,0.06); border-top-color: #F687B3; color: white;">
+            <span class="theme-icon">🌬️</span>
+            <h3 style="color: white;">Environmental Inequality</h3>
+            <p style="color: rgba(255,255,255,0.75);">Smoke and ash from the dump, rats, repeated floods, and the stigma of "undesirable" land — Black residents bore the environmental burden long before the term "environmental injustice" existed.</p>
+        </div>
+        <div class="theme-card" style="background: rgba(255,255,255,0.06); border-top-color: #F687B3; color: white;">
+            <span class="theme-icon">🛒</span>
+            <h3 style="color: white;">Erasure by Renewal</h3>
+            <p style="color: rgba(255,255,255,0.75);">As Sears, the mall, road expansions, and rezoning drove land values up, families were bought out or priced out. By the time the modern shopping district took shape, the Black community was almost entirely displaced.</p>
+        </div>
+    </div>
+</section>
+
+<!-- ══ KEY THEMES ══ -->
+<section class="themes-section">
+    <h2>Key Themes</h2>
+    <div class="themes-grid">
+        <div class="theme-card" style="border-top-color: var(--creek-blue);">
+            <span class="theme-icon">🌊</span>
+            <h3>Water & Flooding</h3>
+            <p>Cherry Creek's story is inseparable from water — the devastating 1864 flash flood, the 1933 Castlewood Dam failure, and the construction of Cherry Creek Dam to tame the creek once and for all.</p>
+        </div>
+        <div class="theme-card" style="border-top-color: var(--earth-brown);">
+            <span class="theme-icon">🏕️</span>
+            <h3>Indigenous Heritage</h3>
+            <p>The Arapaho (Hinono'ei), Cheyenne (Tsistsistas), and Ute (Nuche) peoples — among 48+ tribal nations tied to this land — used Cherry Creek for hunting, agriculture, and trade. The 1851 Fort Laramie Treaty was violated by gold-rush settlement.</p>
+        </div>
+        <div class="theme-card" style="border-top-color: var(--gold-rush);">
+            <span class="theme-icon">⛏️</span>
+            <h3>Gold Rush Origins</h3>
+            <p>Placer gold discovered in 1858 drew thousands to the confluence of Cherry Creek and the South Platte — creating the rival towns that merged into Denver.</p>
+        </div>
+        <div class="theme-card" style="border-top-color: #805AD5;">
+            <span class="theme-icon">🛍️</span>
+            <h3>Commerce & Development</h3>
+            <p>From the 1953 shopping center to the 1990 enclosed mall to the 2024 Cherry Creek West redevelopment, the area has been a premier retail destination for seven decades.</p>
+        </div>
+        <div class="theme-card" style="border-top-color: #319795;">
+            <span class="theme-icon">🚴</span>
+            <h3>Recreation & Trails</h3>
+            <p>Colorado's first state park (1959) and the 40+ mile Cherry Creek Trail connect downtown Denver to Franktown, following ancient Native American paths.</p>
+        </div>
+        <div class="theme-card" style="border-top-color: var(--forest-green);">
+            <span class="theme-icon">🏙️</span>
+            <h3>Urban Design</h3>
+            <p>Speer Boulevard's 1906 construction channelized the creek. Over a century later, a 2024 vision study proposes restoring biodiversity and improving pedestrian access.</p>
+        </div>
+    </div>
+</section>
+
+<!-- ══ MAP ══ -->
+<section class="map-section">
+    <h2>Cherry Creek Area</h2>
+    <div class="map-embed">
+        <iframe src="https://www.openstreetmap.org/export/embed.html?bbox=-104.97%2C39.70%2C-104.92%2C39.73&layer=mapnik&marker=39.715%2C-104.953" allowfullscreen></iframe>
+    </div>
+</section>
+
+<!-- ══ LIFE IN THE ERA GALLERY ══ -->
+<section class="themes-section">
+    <h2>Life in the Era</h2>
+    <p style="text-align: center; max-width: 750px; margin: 0 auto 30px; color: var(--text-light);">Period photographs from the Library of Congress capturing daily life across the decades that shaped Cherry Creek. <em>These images are illustrative of each era — not photographs of Cherry Creek itself.</em></p>
+    <div class="themes-grid">
+        <div class="theme-card" style="padding: 0; overflow: hidden; border-top-color: var(--gold-rush);">
+            <img src="https://tile.loc.gov/storage-services/service/pnp/det/4a10000/4a12000/4a12200/4a12278r.jpg" style="width:100%; height:200px; object-fit:cover; display:block;" alt="Fifth Avenue 1905" loading="lazy" referrerpolicy="no-referrer">
+            <div style="padding: 20px;">
+                <h3 style="font-family:'Playfair Display',serif; font-size:1.15rem; margin-bottom:6px;">1905 — City Beautiful Era</h3>
+                <p style="font-size:0.85rem; color:var(--text-light);">Fifth Avenue after a snowstorm, New York. The same City Beautiful aesthetic shaped Speer Boulevard along Cherry Creek (1906–1918).</p>
+                <p style="font-size:0.7rem; color:var(--text-light); margin-top:8px; font-style:italic;">Detroit Publishing Co., 1905. LOC item 2016804564. Public Domain.</p>
+            </div>
+        </div>
+        <div class="theme-card" style="padding: 0; overflow: hidden; border-top-color: #B83280;">
+            <img src="https://tile.loc.gov/storage-services/service/pnp/det/4a10000/4a12000/4a12400/4a12410r.jpg" style="width:100%; height:200px; object-fit:cover; display:block;" alt="Fifth Avenue 1905 street" loading="lazy" referrerpolicy="no-referrer">
+            <div style="padding: 20px;">
+                <h3 style="font-family:'Playfair Display',serif; font-size:1.15rem; margin-bottom:6px;">1905 — Street Life & Fashion</h3>
+                <p style="font-size:0.85rem; color:var(--text-light);">Up Fifth Avenue from 28th Street, NYC. Long coats, hats, horse-drawn carriages — the world Harman residents would have recognized just before annexation.</p>
+                <p style="font-size:0.7rem; color:var(--text-light); margin-top:8px; font-style:italic;">Detroit Publishing Co., 1905. LOC item 2016804655. Public Domain.</p>
+            </div>
+        </div>
+        <div class="theme-card" style="padding: 0; overflow: hidden; border-top-color: #1A202C;">
+            <img src="https://tile.loc.gov/storage-services/service/pnp/fsa/8c00000/8c00900/8c00916r.jpg" style="width:100%; height:200px; object-fit:cover; display:block;" alt="Easter morning 1941" loading="lazy" referrerpolicy="no-referrer">
+            <div style="padding: 20px;">
+                <h3 style="font-family:'Playfair Display',serif; font-size:1.15rem; margin-bottom:6px;">1941 — Easter Sunday Best</h3>
+                <p style="font-size:0.85rem; color:var(--text-light);">Boys on Easter morning, Southside Chicago. The dignity of dress in Black communities of the era — a parallel to the Sunday-best worn by Cherry Creek's Black families heading to church.</p>
+                <p style="font-size:0.7rem; color:var(--text-light); margin-top:8px; font-style:italic;">Russell Lee, April 1941. LOC FSA/OWI. Public Domain.</p>
+            </div>
+        </div>
+        <div class="theme-card" style="padding: 0; overflow: hidden; border-top-color: #1A202C;">
+            <img src="https://tile.loc.gov/storage-services/service/pnp/fsa/8c36000/8c36000/8c36090r.jpg" style="width:100%; height:200px; object-fit:cover; display:block;" alt="Jitterbug 1939" loading="lazy" referrerpolicy="no-referrer">
+            <div style="padding: 20px;">
+                <h3 style="font-family:'Playfair Display',serif; font-size:1.15rem; margin-bottom:6px;">1939 — Saturday Night, Juke Joint</h3>
+                <p style="font-size:0.85rem; color:var(--text-light);">Jitterbugging near Clarksdale, Mississippi. Music, dance, and community — the cultural fabric of Black American life during Cherry Creek's mid-century years.</p>
+                <p style="font-size:0.7rem; color:var(--text-light); margin-top:8px; font-style:italic;">Marion Post Wolcott, Nov 1939. LOC FSA/OWI. Public Domain.</p>
+            </div>
+        </div>
+        <div class="theme-card" style="padding: 0; overflow: hidden; border-top-color: #805AD5;">
+            <img src="https://tile.loc.gov/storage-services/service/pnp/ppmsca/51700/51714r.jpg" style="width:100%; height:200px; object-fit:cover; display:block;" alt="Supermarket 1957" loading="lazy" referrerpolicy="no-referrer">
+            <div style="padding: 20px;">
+                <h3 style="font-family:'Playfair Display',serif; font-size:1.15rem; margin-bottom:6px;">1957 — The Shopping Era</h3>
+                <p style="font-size:0.85rem; color:var(--text-light);">A supermarket in 1957 — the same year Cherry Creek Shopping Center had been open four years. Postwar consumer culture was reshaping American neighborhoods.</p>
+                <p style="font-size:0.7rem; color:var(--text-light); margin-top:8px; font-style:italic;">U.S. News & World Report Collection, 1957. LOC item 2017657527. No known restrictions.</p>
+            </div>
+        </div>
+        <div class="theme-card" style="padding: 0; overflow: hidden; border-top-color: var(--creek-blue);">
+            <img src="https://tile.loc.gov/storage-services/service/pnp/highsm/17700/17797r.jpg" style="width:100%; height:200px; object-fit:cover; display:block;" alt="Mall 1980s" loading="lazy" referrerpolicy="no-referrer">
+            <div style="padding: 20px;">
+                <h3 style="font-family:'Playfair Display',serif; font-size:1.15rem; margin-bottom:6px;">c. 1980s — The Modern Mall</h3>
+                <p style="font-size:0.85rem; color:var(--text-light);">An indoor shopping mall from the era when Cherry Creek's enclosed mall was being planned (dedicated 1990) — atriums, fountains, and aspirational retail defined the moment.</p>
+                <p style="font-size:0.7rem; color:var(--text-light); margin-top:8px; font-style:italic;">Carol M. Highsmith, c. 1980–1990. LOC Highsmith Archive, item 2011635991. No known restrictions.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ══ ARCHIVES & SOURCES ══ -->
+<section class="themes-section">
+    <h2>Where to Dig Deeper</h2>
+    <p style="text-align: center; max-width: 750px; margin: 0 auto 30px; color: var(--text-light);">Archives, museums, and oral history collections preserving the full story</p>
+    <div class="themes-grid">
+        <div class="theme-card" style="border-top-color: var(--creek-blue);">
+            <span class="theme-icon">📚</span>
+            <h3>Denver Public Library</h3>
+            <p>Western History &amp; Special Collections holds Cherry Creek neighborhood photos, Sanborn fire insurance maps, the 1864 flood images, and the 1920s dump photos. Search "Harman," "Cherry Creek flood 1864," "Garfield Street."</p>
+        </div>
+        <div class="theme-card" style="border-top-color: var(--earth-brown);">
+            <span class="theme-icon">🏛️</span>
+            <h3>History Colorado</h3>
+            <p>Exhibits on Indigenous Colorado, Sand Creek, and Denver's urban growth. Manuscript collections, urban-renewal files, and educational materials connecting Cherry Creek, Four Mile, and Indigenous histories.</p>
+        </div>
+        <div class="theme-card" style="border-top-color: var(--gold-rush);">
+            <span class="theme-icon">🏚️</span>
+            <h3>Four Mile Historic Park</h3>
+            <p>The 1859 Brantner-built stage stop sits in the Cherry Creek corridor. Increasingly interprets Indigenous presence through land acknowledgments, tipi exhibits, and signage about Ute, Arapaho, and Cheyenne peoples.</p>
+        </div>
+        <div class="theme-card" style="border-top-color: #B83280;">
+            <span class="theme-icon">✊🏿</span>
+            <h3>Black American West Museum</h3>
+            <p>Family photographs and oral histories of Black Denver, including Cherry Creek ties — the Parker Brothers, broader context on Black migration, segregation, and property ownership in Colorado.</p>
+        </div>
+        <div class="theme-card" style="border-top-color: #1A202C;">
+            <span class="theme-icon">🎙️</span>
+            <h3>CPR & Denverite Oral Histories</h3>
+            <p>"Legacy of Cherry Creek: Growing Up Black in Denver's Transforming Neighborhood" — interviews with Judge Gary Jackson, Warren Scott, Trudi Morrison, and Cleo Parker Robinson.</p>
+        </div>
+        <div class="theme-card" style="border-top-color: var(--forest-green);">
+            <span class="theme-icon">🪶</span>
+            <h3>Tribal Historic Preservation</h3>
+            <p>For Indigenous-centered narratives: Northern Arapaho, Southern Cheyenne and Arapaho, and Ute tribal historic preservation offices, plus oral histories from universities and History Colorado.</p>
+        </div>
+    </div>
+</section>
+
+<!-- ══ FOOTER ══ -->
+<footer>
+    <p><strong>Cherry Creek History Dashboard</strong> — 150 Years &amp; the Untold Story</p>
+    <p style="margin-top: 8px; font-size: 0.8rem;">Sources: "150 History of Cherry Creek and its Untold Story," Denver Public Library, History Colorado, Four Mile Historic Park, Black American West Museum, Colorado Public Radio, Denverite, U.S. Army Corps of Engineers</p>
+</footer>
+
+<script>
+const timelineData = [
+    {
+        year: "Deep Time",
+        title: "48+ Tribal Nations on the Land",
+        desc: "Archaeological evidence shows maize and amaranth cultivation, plains-style moccasins, yucca-woven sandals, and seashells from the Gulf of Mexico — proof of long-distance trade networks. At least 48 tribal nations have lived in the Denver area.",
+        category: "indigenous",
+        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Arapaho_camp_with_buffalo_meat_drying_near_Fort_Dodge%2C_Kansas%2C_1870_-_NARA_-_518892.tif/lossy-page1-1280px-Arapaho_camp_with_buffalo_meat_drying_near_Fort_Dodge%2C_Kansas%2C_1870_-_NARA_-_518892.tif.jpg",
+        credit: "Arapaho camp, 1870 — William S. Soule. NARA 518892. Public Domain."
+    },
+    {
+        year: "Pre-1800s",
+        title: "Arapaho, Cheyenne & Ute Homelands",
+        desc: "The Arapaho (Hinono'ei), Cheyenne (Tsistsistas), and Ute (Nuche) peoples used the Cherry Creek corridor for seasonal hunting, agriculture, and trade. The valley's water, game, and cottonwood shelter made it part of broader seasonal rounds.",
+        category: "indigenous",
+        image: "https://upload.wikimedia.org/wikipedia/commons/3/39/Little_Raven%2C_principal_Arapaho_Chief_-_NARA_-_533044.jpg",
+        credit: "Chief Little Raven, principal Arapaho Chief — c. 1881–85. NARA 533044. Public Domain."
+    },
+    {
+        year: "1851",
+        title: "Fort Laramie Treaty Signed",
+        desc: "The Fort Laramie (Horse Creek) Treaty allowed Euro-American passage through Indigenous lands but NOT settlement. Later settlement in the Cherry Creek area would directly violate this treaty.",
+        category: "injustice"
+    },
+    {
+        year: "June 1858",
+        title: "Gold Discovered at Cherry Creek",
+        desc: "William Green Russell's party discovered placer gold in the South Platte River near the Cherry Creek tributary, sparking a rush of settlers to the area — in violation of the 1851 Fort Laramie Treaty.",
+        category: "origins",
+        image: "https://upload.wikimedia.org/wikipedia/commons/4/42/General_William_Larimer_%281860%29.jpg",
+        credit: "Gen. William Larimer, founder of Denver City — 1860. Public Domain."
+    },
+    {
+        year: "1859",
+        title: "Four Mile House Built",
+        desc: "The Brantner brothers built Four Mile House during the gold rush. It became a stagecoach stop on the Cherokee Trail — the last stop before Denver — sitting along what had been an Indigenous travel corridor.",
+        category: "origins",
+        image: "https://upload.wikimedia.org/wikipedia/commons/2/2b/Four_Mile_House.JPG",
+        credit: "Four Mile House, Denver — photo by Jeffrey Beall, 2009. CC BY-SA 3.0."
+    },
+    {
+        year: "Sept 1858",
+        title: "St. Charles Town & Auraria Founded",
+        desc: "Settlers from Kansas established St. Charles Town, followed by William Russell's party founding Auraria on the south side of Cherry Creek.",
+        category: "origins"
+    },
+    {
+        year: "Nov 1858",
+        title: "Denver City Named",
+        desc: "General William Larimer claimed the east side of Cherry Creek, naming it Denver City after Kansas Territorial Governor James W. Denver.",
+        category: "origins"
+    },
+    {
+        year: "1860",
+        title: "Denver City & Auraria Merge",
+        desc: "The rival towns on opposite sides of Cherry Creek officially merged into a single city, laying the foundation for modern Denver.",
+        category: "origins",
+        image: "https://upload.wikimedia.org/wikipedia/commons/1/15/Map_of_Denver%2C_Auraria_and_Highland_-_DPLA_-_91770498d8629224914ebfe61fc481ef.jpg",
+        credit: "Period map of Denver, Auraria & Highland — Foster, via Denver Public Library / DPLA. Public Domain."
+    },
+    {
+        year: "1861",
+        title: "Treaty of Fort Wise",
+        desc: "The Fort Wise Treaty seized the majority of Cheyenne and Arapaho land — including Denver and the Cherry Creek area — opening the door to intensive non-Indigenous settlement and resource extraction.",
+        category: "injustice"
+    },
+    {
+        year: "May 19, 1864",
+        title: "The Great Cherry Creek Flood",
+        desc: "A massive flash flood killed ~20 people and destroyed the Rocky Mountain News building. Chief Little Raven had warned settlers years earlier. After the flood, Four Mile House transitioned from stage stop to farm.",
+        category: "flood"
+    },
+    {
+        year: "Nov 1864",
+        title: "Sand Creek Massacre",
+        desc: "Colorado militia attacked Cheyenne and Arapaho people who had already been forcibly displaced from their lands — a devastating turning point following the gold rush and Fort Wise Treaty.",
+        category: "injustice",
+        image: "https://upload.wikimedia.org/wikipedia/commons/1/12/At_the_Sand_Creek_Massacre%2C_1874-1875.jpg",
+        credit: "\"At the Sand Creek Massacre\" — ledger art by Howling Wolf (Cheyenne), 1874–75. Public Domain."
+    },
+    {
+        year: "1870s",
+        title: "Town of Harman Founded",
+        desc: "Edwin P. Harman, a Confederate veteran, and his wife Lou G. Harman founded the semi-rural town of Harman along Cherry Creek. Lou appears on early maps as the landowner — she may have been the one who actually secured the land.",
+        category: "origins"
+    },
+    {
+        year: "1882–1886",
+        title: "Harman Sells Lots & Incorporates",
+        desc: "Lots were sold starting in 1882; Harman formally incorporated in 1886 with ungraded streets, no central water supply, and the creek used for sewage. Incorporation was driven by needs for irrigation and \"protection against tramps, bums, bummers, and the liquor traffic.\"",
+        category: "origins"
+    },
+    {
+        year: "1893–1894",
+        title: "Panic of 1893 & Annexation to Denver",
+        desc: "The Panic of 1893 devastated silver-dependent Colorado. Harman went bankrupt and voted in 1894 to be annexed by Denver — ending its run as an independent town.",
+        category: "origins"
+    },
+    {
+        year: "Early 1900s",
+        title: "Black \"Colony\" Forms in Cherry Creek",
+        desc: "Excluded from desirable neighborhoods by segregation, Black families bought affordable land south of 1st Avenue along the flood-prone creek and adjacent to the city dump. Cherry Creek became one of Denver's early Black communities, alongside Five Points and Globeville.",
+        category: "untold",
+        image: "https://tile.loc.gov/storage-services/service/pnp/fsa/8c00000/8c00900/8c00916r.jpg",
+        credit: "Era context: Boys on Easter morning, Southside Chicago — Russell Lee, April 1941. LOC FSA/OWI Collection. Public Domain. (Illustrative of era; not Cherry Creek.)"
+    },
+    {
+        year: "1906–1918",
+        title: "Speer Boulevard Construction",
+        desc: "As part of Denver's City Beautiful Movement, Speer Boulevard was built along Cherry Creek. The creek was channelized, embankments stabilized, and ornamental features added.",
+        category: "infrastructure",
+        image: "https://upload.wikimedia.org/wikipedia/commons/3/36/Speer_Boulevard_Denver.JPG",
+        credit: "Speer Boulevard along Cherry Creek (modern view) — Jeffrey Beall, 2009. CC BY-SA 3.0."
+    },
+    {
+        year: "1920s–40s",
+        title: "Black Cherry Creek Community Life",
+        desc: "Families like the Jacksons, Scotts, Morrisons, and Robinsons built tight-knit lives along Cherry Street and Downing. Nancelia Jackson moved here in 1926. Residents kept gardens, chickens, and livestock; churches and extended families anchored the community despite environmental hazards from the dump and floods.",
+        category: "untold",
+        image: "https://tile.loc.gov/storage-services/service/pnp/fsa/8c36000/8c36000/8c36090r.jpg",
+        credit: "Era context: Jitterbugging at a juke joint near Clarksdale, Mississippi — Marion Post Wolcott, Nov 1939. LOC FSA/OWI Collection. Public Domain. (Illustrative of era; not Cherry Creek.)"
+    },
+    {
+        year: "Aug 3, 1933",
+        title: "Castlewood Dam Failure",
+        desc: "The dam collapsed after torrential rain, releasing over 1 billion gallons. An 11-foot wall of water struck Denver. Telephone operator Nettie Driskill's warnings helped save an estimated 5,000 lives.",
+        category: "flood",
+        image: "https://upload.wikimedia.org/wikipedia/commons/f/fc/Castlewood_Dam_Trails.jpg",
+        credit: "Remnants of the Castlewood Dam (post-1933 failure), Castlewood Canyon State Park — Zenhaus. CC BY 3.0."
+    },
+    {
+        year: "1941",
+        title: "Cherry Creek Dam Authorized",
+        desc: "President Roosevelt signed a bill authorizing the Cherry Creek project as part of a $275 million national flood-control program.",
+        category: "infrastructure"
+    },
+    {
+        year: "1946–1950",
+        title: "Cherry Creek Dam Constructed",
+        desc: "The U.S. Army Corps of Engineers built the earthen dam — 141 feet high and 14,300 feet long — to protect Denver from future Cherry Creek flooding.",
+        category: "infrastructure",
+        image: "https://upload.wikimedia.org/wikipedia/commons/7/79/USACE_Cherry_Creek_dam_and_reservoir.jpg",
+        credit: "Cherry Creek Dam and Reservoir — Harry Weddington, U.S. Army Corps of Engineers. Public Domain."
+    },
+    {
+        year: "1950s",
+        title: "Sears Opens — Erasure Begins",
+        desc: "The Sears store on 1st Avenue signaled Cherry Creek's emerging role as a shopping hub. Road expansions, rezoning, and rising property values began pressuring long-time Black families to sell or be priced out.",
+        category: "untold"
+    },
+    {
+        year: "Oct 1953",
+        title: "Cherry Creek Shopping Center Opens",
+        desc: "Denver Dry Goods opened as the first store in the new Cherry Creek Shopping Center, built on land purchased by architect Temple Hoyne Buell in 1925.",
+        category: "commerce",
+        image: "https://tile.loc.gov/storage-services/service/pnp/ppmsca/51700/51714r.jpg",
+        credit: "Era context: Shopping in a supermarket, 1957. U.S. News & World Report Collection, LOC. No known restrictions. (Illustrative of era; not Cherry Creek.)"
+    },
+    {
+        year: "June 1959",
+        title: "Colorado's First State Park",
+        desc: "Cherry Creek State Park opened as the first state park in Colorado, encompassing 4,200 acres with an 880-acre reservoir.",
+        category: "recreation"
+    },
+    {
+        year: "1960s–70s",
+        title: "Black Community Displaced",
+        desc: "Urban renewal completed the transformation. Families who had lived in Cherry Creek for generations were bought out or priced out. By the time the modern shopping district took shape, the Black community had been almost entirely displaced — a classic urban renewal pattern of erasure.",
+        category: "untold",
+        image: "https://tile.loc.gov/storage-services/service/pnp/fsa/8c10000/8c10700/8c10734r.jpg",
+        credit: "Era context: Tenant family on Good Hope Plantation, Mississippi Delta — Marion Post Wolcott, 1939. LOC FSA/OWI. Public Domain. (Illustrative of mid-century Black American life; not Cherry Creek.)"
+    },
+    {
+        year: "1971–1972",
+        title: "Cherry Creek Trail Planned",
+        desc: "Fred Wolfe drew plans for the Cherry Creek Trail as part of Denver's bikeway plan, originally connected to a potential 1976 Olympics bid.",
+        category: "recreation"
+    },
+    {
+        year: "Aug 1990",
+        title: "Enclosed Mall Dedicated",
+        desc: "The fully enclosed Cherry Creek Shopping Center opened with May D&F and Saks Fifth Avenue as anchor stores, solidifying the area as Denver's premier retail district.",
+        category: "commerce",
+        image: "https://upload.wikimedia.org/wikipedia/commons/7/7d/Cherrycreekmalloriginal2.jpg",
+        credit: "Cherry Creek Shopping Center — BUTTON74, Wikimedia Commons. CC BY-SA 4.0."
+    },
+    {
+        year: "1991",
+        title: "Neiman Marcus Arrives",
+        desc: "Neiman Marcus opened at Cherry Creek Shopping Center, further establishing the area as a luxury shopping destination.",
+        category: "commerce"
+    },
+    {
+        year: "2000s",
+        title: "Trail Expands to 40+ Miles",
+        desc: "The Cherry Creek Regional Trail grew to approximately 40–47 miles, stretching from Franktown in Douglas County to Confluence Park in downtown Denver.",
+        category: "recreation"
+    },
+    {
+        year: "2024",
+        title: "Cherry Creek West Approved",
+        desc: "Denver approved a massive redevelopment transforming mall parking lots into an urban neighborhood with apartments, offices, shops, and green space.",
+        category: "modern"
+    },
+    {
+        year: "2024",
+        title: "Speer Blvd Vision Study Complete",
+        desc: "A year-long study proposed consolidating Speer Boulevard, restoring creek biodiversity, and improving pedestrian and bicycle connections along the corridor that carries 50,000+ cars daily.",
+        category: "modern"
+    },
+    {
+        year: "2025+",
+        title: "A New Chapter Begins",
+        desc: "Construction commenced on Cherry Creek West and related projects, marking the next era for this historic Denver corridor.",
+        category: "modern"
+    }
+];
+
+// Render timeline
+const container = document.querySelector('.timeline-container');
+
+function renderTimeline(filter = 'all') {
+    // Remove old items
+    container.querySelectorAll('.timeline-item').forEach(el => el.remove());
+
+    const filtered = filter === 'all' ? timelineData : timelineData.filter(d => d.category === filter);
+
+    filtered.forEach((item, i) => {
+        const side = i % 2 === 0 ? 'left' : 'right';
+        const el = document.createElement('div');
+        el.className = `timeline-item ${side}`;
+        el.dataset.category = item.category;
+        const imgHtml = item.image ? `
+            <div class="timeline-image">
+                <img src="${item.image}" alt="${item.title}" loading="lazy" referrerpolicy="no-referrer" onerror="this.parentElement.style.display='none'">
+                <div class="timeline-credit">${item.credit || ''}</div>
+            </div>` : '';
+        el.innerHTML = `
+            <div class="timeline-dot dot-${item.category}"></div>
+            <div class="timeline-card">
+                ${imgHtml}
+                <span class="timeline-tag tag-${item.category}">${item.category.replace('-', ' ')}</span>
+                <div class="timeline-year">${item.year}</div>
+                <div class="timeline-title">${item.title}</div>
+                <div class="timeline-desc">${item.desc}</div>
+            </div>
+        `;
+        container.appendChild(el);
+    });
+
+    // Trigger animations
+    requestAnimationFrame(() => {
+        document.querySelectorAll('.timeline-item').forEach((el, i) => {
+            setTimeout(() => el.classList.add('visible'), i * 100);
+        });
+    });
+}
+
+// Filter tabs
+document.querySelectorAll('.filter-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+        document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        renderTimeline(tab.dataset.filter);
+    });
+});
+
+// Scroll-based reveal
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+    });
+}, { threshold: 0.15 });
+
+function observeItems() {
+    document.querySelectorAll('.timeline-item').forEach(el => observer.observe(el));
+}
+
+// Init
+renderTimeline();
+setTimeout(observeItems, 200);
+</script>
+
+</body>
+</html>
