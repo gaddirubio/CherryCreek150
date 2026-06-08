@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cherry Creek 150 — The Untold Story</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600;700&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+    --cream:#F5EEDC;
+    --cream-dark:#EDE3CC;
+    --cream-deep:#E5D7B6;
+    --ink:#1A1A1A;
+    --ink-soft:#3A3A3A;
+    --ink-muted:#5C5C5C;
+    --cherry:#C8252C;
+    --cherry-dark:#9B1C22;
+    --leaf:#2D5A2D;
+    --gold:#B8860B;
+    --rule:#8B7355;
+}
+html{scroll-behavior:smooth;}
+body{
+    font-family:'Cormorant Garamond',Georgia,serif;
+    background:var(--cream);
+    color:var(--ink);
+    line-height:1.65;
+}
+
+/* ── HERO ── */
+.hero{
+    background:var(--cream);
+    padding:40px 40px 30px;
+    text-align:center;
+    position:relative;
+    border-bottom:2px solid var(--ink);
+}
+.hero-inner{position:relative;z-index:2;}
+.hero-logo{
+    max-width:760px;width:90%;height:auto;display:block;margin:0 auto;
+}
+.brand-title{
+    font-family:'Playfair Display',serif;
+    font-size:4.2rem;font-weight:700;
+    letter-spacing:8px;color:var(--ink);
+    line-height:1;
+}
+.brand-divider{
+    display:flex;align-items:center;justify-content:center;
+    gap:10px;margin:18px auto;max-width:380px;
+}
+.brand-divider .line{flex:1;height:1px;background:var(--ink);}
+.brand-divider .diamond{
+    width:7px;height:7px;background:var(--ink);transform:rotate(45deg);
+}
+.brand-150{
+    font-family:'Playfair Display',serif;
+    font-size:6rem;font-weight:700;
+    color:var(--cherry);line-height:1;
+    display:flex;align-items:center;justify-content:center;gap:30px;
+    margin:14px 0;
+}
+.cherry-svg{width:70px;height:70px;}
+.brand-subtitle{
+    font-family:'Playfair Display',serif;
+    font-size:1.3rem;letter-spacing:6px;text-transform:uppercase;
+    color:var(--ink);margin-top:20px;
+}
+.brand-tagline{
+    font-family:'Cormorant Garamond',serif;
+    font-style:italic;font-size:1rem;
+    color:var(--ink-soft);margin-top:6px;letter-spacing:.5px;
+}
+
+/* ── STATS ── */
+.stats{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));
+    gap:14px;max-width:1100px;margin:30px auto;padding:0 30px;
+}
+.stat{
+    background:var(--cream-dark);
+    border:1.5px solid var(--ink);padding:18px 14px;text-align:center;
+}
+.stat-num{
+    font-family:'Playfair Display',serif;
+    font-size:1.8rem;font-weight:700;color:var(--cherry);line-height:1;
+}
+.stat-lbl{
+    font-family:'Inter',sans-serif;font-size:.7rem;
+    text-transform:uppercase;letter-spacing:1.5px;
+    color:var(--ink-soft);margin-top:6px;font-weight:600;
+}
+
+/* ── STICKY NAV ── */
+nav.sticky{
+    position:sticky;top:0;z-index:100;
+    background:var(--cream);
+    border-top:1px solid var(--ink);
+    border-bottom:1px solid var(--ink);
+    padding:10px 16px;
+    overflow-x:auto;text-align:center;
+}
+nav.sticky::-webkit-scrollbar{height:3px;}
+nav.sticky::-webkit-scrollbar-thumb{background:var(--cherry);}
+.nav-inner{display:inline-flex;gap:6px;min-width:max-content;}
+.nav-btn{
+    font-family:'Playfair Display',serif;
+    padding:7px 14px;border-radius:0;
+    border:1.5px solid var(--ink);background:var(--cream);
+    cursor:pointer;font-size:.78rem;font-weight:600;
+    color:var(--ink);letter-spacing:1px;
+    white-space:nowrap;transition:all .2s;
+}
+.nav-btn:hover{background:var(--cherry);color:var(--cream);border-color:var(--cherry);}
+.nav-btn.active{background:var(--ink);color:var(--cream);border-color:var(--ink);}
+
+/* ── SECTION (Decade) ── */
+section.decade{
+    max-width:1100px;margin:0 auto;padding:60px 40px 50px;
+    border-bottom:1px solid var(--rule);
+    scroll-margin-top:70px;
+    position:relative;
+}
+.decade-eyebrow{
+    font-family:'Inter',sans-serif;
+    font-size:.75rem;font-weight:700;
+    letter-spacing:4px;text-transform:uppercase;
+    color:var(--cherry);text-align:center;margin-bottom:6px;
+}
+.decade-year{
+    font-family:'Playfair Display',serif;
+    font-size:4rem;font-weight:700;color:var(--ink);
+    text-align:center;line-height:1;margin-bottom:4px;
+    letter-spacing:2px;
+}
+.decade-era{
+    font-family:'Cormorant Garamond',serif;
+    font-style:italic;font-size:1.3rem;
+    color:var(--ink-soft);text-align:center;margin-bottom:10px;
+}
+.decade-divider{
+    display:flex;align-items:center;justify-content:center;
+    gap:8px;margin:18px auto 28px;max-width:200px;
+}
+.decade-divider .line{flex:1;height:1px;background:var(--rule);}
+.decade-divider .diamond{
+    width:6px;height:6px;background:var(--cherry);transform:rotate(45deg);
+}
+.decade-context{
+    font-family:'Cormorant Garamond',serif;
+    font-size:1.15rem;text-align:center;font-style:italic;
+    color:var(--ink-soft);max-width:700px;margin:0 auto 30px;
+    padding:14px 20px;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);
+}
+
+/* ── Image gallery ── */
+.image-grid{
+    display:grid;gap:14px;margin:24px 0 30px;
+}
+.image-grid.cols-1{grid-template-columns:1fr;}
+.image-grid.cols-2{grid-template-columns:1fr 1fr;}
+.image-grid.cols-3{grid-template-columns:repeat(3,1fr);}
+.img-card{
+    background:var(--cream-dark);border:2px solid var(--ink);
+    padding:8px;position:relative;
+}
+.img-card img{
+    width:100%;height:auto;display:block;aspect-ratio:4/3;object-fit:cover;
+}
+.img-card.tall img{aspect-ratio:3/4;}
+.img-card.wide img{aspect-ratio:16/9;}
+.img-caption{
+    font-family:'Cormorant Garamond',serif;font-style:italic;
+    font-size:.85rem;color:var(--ink-soft);text-align:center;
+    margin-top:8px;padding:0 4px;
+}
+
+/* ── Content cards ── */
+.content-grid{
+    display:grid;grid-template-columns:2fr 1fr;gap:30px;margin-top:20px;
+}
+@media(max-width:768px){.content-grid{grid-template-columns:1fr;}}
+
+.major-events{
+    background:var(--cream-dark);
+    border:1.5px solid var(--ink);
+    padding:24px 26px;
+}
+.major-events h3{
+    font-family:'Playfair Display',serif;
+    font-size:1.05rem;font-weight:700;
+    text-transform:uppercase;letter-spacing:3px;
+    color:var(--cherry);margin-bottom:16px;
+    padding-bottom:10px;border-bottom:1px solid var(--cherry);
+    text-align:center;
+}
+.event{
+    padding:10px 0;border-bottom:1px dotted var(--rule);
+    font-size:1.02rem;line-height:1.65;
+}
+.event:last-child{border-bottom:none;}
+.event-year{
+    font-family:'Playfair Display',serif;
+    font-weight:700;color:var(--cherry);
+    font-size:.92rem;letter-spacing:.5px;
+    display:inline-block;margin-right:8px;
+}
+.event-text{color:var(--ink);}
+.event-title{
+    font-family:'Playfair Display',serif;
+    font-weight:600;color:var(--ink);
+    font-size:1rem;display:block;margin-bottom:3px;
+}
+
+.untold{
+    background:var(--ink);color:var(--cream);
+    padding:22px 24px;border:1.5px solid var(--ink);
+    align-self:start;
+}
+.untold-label{
+    font-family:'Inter',sans-serif;font-size:.65rem;
+    font-weight:700;letter-spacing:3px;text-transform:uppercase;
+    color:var(--cherry);margin-bottom:10px;
+}
+.untold h4{
+    font-family:'Playfair Display',serif;
+    font-size:1.1rem;font-weight:600;
+    margin-bottom:10px;line-height:1.3;
+}
+.untold p{
+    font-family:'Cormorant Garamond',serif;
+    font-size:.95rem;line-height:1.65;
+    color:rgba(245,238,220,.92);
+}
+
+/* ── Pretext section special styling ── */
+section.pretext{
+    background:var(--cream-deep);
+}
+.pretext .decade-year{font-size:2.6rem;}
+
+/* ── QR Section ── */
+section.qr-section{
+    background:var(--cream);
+    max-width:none;margin:0;padding:60px 30px 80px;
+    text-align:center;border-bottom:none;
+    border-top:3px solid var(--ink);
+}
+.qr-section .decade-year{font-size:2.6rem;margin-bottom:8px;}
+.qr-card{
+    background:var(--cream-dark);
+    border:2px solid var(--ink);
+    padding:30px 30px 26px;display:inline-block;
+    box-shadow:0 4px 20px rgba(0,0,0,0.1);max-width:340px;
+}
+.qr-card img{display:block;margin:0 auto;border:8px solid var(--cream);background:#fff;}
+.qr-url{
+    margin-top:14px;font-size:.78rem;color:var(--ink-soft);
+    word-break:break-all;font-family:'Inter',monospace;
+}
+.qr-note{
+    margin-top:14px;font-family:'Playfair Display',serif;
+    font-size:1rem;color:var(--cherry);font-weight:600;
+}
+
+/* ── Footer ── */
+footer{
+    background:var(--ink);color:var(--cream);
+    text-align:center;padding:36px 20px;
+}
+.footer-badge{
+    width:110px;height:auto;display:block;margin:0 auto 20px;
+}
+footer .end-mark{
+    font-family:'Playfair Display',serif;
+    font-size:1.8rem;letter-spacing:14px;color:var(--cherry);
+    margin-bottom:16px;
+}
+footer p{
+    font-family:'Cormorant Garamond',serif;font-style:italic;
+    font-size:1rem;max-width:600px;margin:6px auto;
+}
+footer .small{
+    font-family:'Inter',sans-serif;font-size:.78rem;
+    letter-spacing:1px;color:rgba(245,238,220,.6);
+    margin-top:14px;font-style:normal;
+}
+
+/* ── Responsive ── */
+@media(max-width:768px){
+    .brand-title{font-size:2.2rem;letter-spacing:4px;}
+    .brand-150{font-size:3.8rem;gap:18px;}
+    .cherry-svg{width:48px;height:48px;}
+    .decade-year{font-size:2.6rem;}
+    .image-grid.cols-2,.image-grid.cols-3{grid-template-columns:1fr;}
+    section.decade{padding:40px 22px;}
+}
+@media print{
+    nav.sticky{display:none;}
+    .qr-card{box-shadow:none;}
+    section.decade{page-break-inside:avoid;}
+}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+
+<!-- ── HERO LOGO (official masthead) ── -->
+<header class="hero">
+    <div class="hero-inner">
+        <img src="images/logo_masthead.png" alt="Cherry Creek 150 — And The Untold Story" class="hero-logo">
+        <div class="brand-tagline">1876 — 2026 &nbsp;•&nbsp; a Colorado sesquicentennial chronicle</div>
+    </div>
+</header>
+
+<!-- ── STATS ── -->
+<div class="stats">
+    <div class="stat"><div class="stat-num">150</div><div class="stat-lbl">Years of History</div></div>
+    <div class="stat"><div class="stat-num">15</div><div class="stat-lbl">Decade Chapters</div></div>
+    <div class="stat"><div class="stat-num">51+</div><div class="stat-lbl">Tribal Nations</div></div>
+    <div class="stat"><div class="stat-num">1876</div><div class="stat-lbl">Colorado Statehood</div></div>
+    <div class="stat"><div class="stat-num">1950</div><div class="stat-lbl">Cherry Creek Dam</div></div>
+</div>
+
+<!-- ── STICKY NAV ── -->
+<nav class="sticky">
+    <div class="nav-inner" id="nav"></div>
+</nav>
+
+<main id="main"></main>
+
+<!-- ── QR CODE ── -->
+<section class="qr-section" id="share">
+    <div class="decade-eyebrow">Share This Story</div>
+    <h2 class="decade-year" style="font-size:2.4rem;">Take It With You</h2>
+    <div class="decade-divider"><span class="line"></span><span class="diamond"></span><span class="diamond"></span><span class="line"></span></div>
+    <p style="max-width:560px;margin:0 auto 26px;font-style:italic;color:var(--ink-soft);font-size:1.05rem;">
+        Scan the QR code below to view this Cherry Creek 150 untold story chronicle on your phone, or share it with a friend.
+    </p>
+    <div class="qr-card">
+        <div id="qrcode"></div>
+        <div class="qr-url" id="qr-url-display"></div>
+        <div class="qr-note">Scan with your phone camera</div>
+    </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+    <img src="images/badge_co150.png" alt="Colorado 150 / America 250 Badge" class="footer-badge">
+    <div class="end-mark">— ❖ ❖ ❖ —</div>
+    <p>Cherry Creek 150 &amp; The Untold Story is a community-led initiative commemorating 150 years of Cherry Creek and Colorado history, in celebration of Colorado's sesquicentennial and America's 250th anniversary.</p>
+    <p class="small">© 2026 Cherry Creek 150 &nbsp;•&nbsp; Sources: Denver Public Library, History Colorado, Cherry Creek Historical Records, Denverite</p>
+</footer>
+
+<script>
+/* ── DATA: 15 Decade chapters + pretext ── */
+const D = [
+{
+    id:"pretext", year:"Pretext", era:"Before 1876 — The Land Before the Look-Back",
+    context:"Indigenous peoples used Cherry Creek as a trading corridor long before statehood, naming it for the chokecherries that grew on its banks.",
+    images:[
+        {src:"images/p001_img1.jpg", caption:"The Cherry Creek corridor — an Indigenous travel route long before settlement"},
+        {src:"images/p002_img1.jpg", caption:"Early stagecoach passage through Indigenous lands"},
+        {src:"images/p003_img1.jpg", caption:"Four Mile House — last stop on the Cherokee Trail"}
+    ],
+    events:[
+        {title:"51+ Tribal Nations on the Land", text:"Archaeological evidence shows maize and amaranth cultivation, plains-style moccasins, yucca-woven sandals, and seashells from the Gulf of Mexico — proof of long-distance trade networks. At least 51 tribal nations have lived in the Denver area."},
+        {year:"Pre-1851", title:"Arapaho, Cheyenne &amp; Ute Travel Corridor", text:"The Arapaho (Hinono'ei), Cheyenne (Tsistsistas), and Ute (Nuche) peoples used the Cherry Creek corridor for seasonal hunting, agriculture, and trade. Indigenous trails became the routes settlers later followed west."},
+        {year:"1851", title:"Fort Laramie Treaty Signed", text:"The Fort Laramie (Horse Creek) Treaty allowed Euro-American passage through Indigenous lands but NOT settlement. Later settlement in Cherry Creek would directly violate this treaty."},
+        {year:"June 1858", title:"Gold Discovered at Cherry Creek", text:"William Green Russell's party discovered placer gold in the South Platte River near Cherry Creek, igniting the Pike's Peak Gold Rush — bringing tens of thousands of settlers in violation of the 1851 treaty."},
+        {year:"1859", title:"Four Mile House Built", text:"The Brantner brothers built Four Mile House during the gold rush — a stagecoach stop on the Cherokee Trail, the last stop before Denver, sitting along an old Indigenous travel corridor."},
+        {year:"Nov 1858", title:"Denver City Named", text:"General William Larimer claimed the east side of Cherry Creek, naming it Denver City after Kansas Territorial Governor James W. Denver."},
+        {year:"1861", title:"Treaty of Fort Wise", text:"The Fort Wise Treaty seized the majority of Cheyenne and Arapaho land — including Denver and Cherry Creek — opening the door to intensive non-Indigenous settlement and resource extraction."},
+        {year:"May 19, 1864", title:"The Great Cherry Creek Flood", text:"A massive flash flood killed ~20 people and destroyed the Rocky Mountain News building. Chief Little Raven had warned settlers years earlier. After the flood, Four Mile House transitioned from a stage stop to a farm."},
+        {year:"Nov 1864", title:"Sand Creek Massacre", text:"Colorado militia attacked Cheyenne and Arapaho people who had already been forcibly displaced from their lands — a devastating turning point following the gold rush and Fort Wise Treaty."},
+        {year:"1870s", title:"Town of Harman Founded", text:"Edwin P. Harman, a Confederate veteran, and his wife Lou G. Harman purchased 320 acres north of the creek and founded the semi-rural town of Harman in 1886. Early settlers were mainly agricultural and dairy farmers."}
+    ],
+    untold:{
+        title:"The Indigenous Origin of the Name",
+        text:"Cherry Creek was named by Indigenous peoples for the wild chokecherries that grew along its banks — a name that has carried forward 150 years even as the land's first stewards were displaced from it."
+    }
+},
+{
+    id:"d1876", year:"1876 – 1886", era:"Statehood Begins — The Centennial State",
+    context:"Colorado became the 38th state in August 1876 — the 'Centennial State' — exactly 100 years after the nation's founding. The City of Denver begins expanding southeast toward Cherry Creek.",
+    images:[
+        {src:"images/p005_img1.jpg", caption:"Stagecoach era ends as railroads dominate travel"},
+        {src:"images/p006_img1.jpg", caption:"Settlement around Four Mile House (1878–1882)"},
+        {src:"images/p006_img2.jpg", caption:"Edwin P. Harman begins selling Town of Harman lots (1882)"}
+    ],
+    events:[
+        {year:"Aug 1876", title:"Colorado Becomes the 38th State", text:"Colorado is called the 'Centennial State' because it became a state exactly 100 years after the nation's founding."},
+        {year:"1876", title:"Denver Expands Southeast", text:"The City of Denver begins expanding southeast toward Cherry Creek."},
+        {year:"1878–1882", title:"Settlement Around Four Mile House", text:"Settlement increases around the old stagecoach stop, but the stagecoach era ends as railroads begin to dominate travel through the region."},
+        {year:"1882", title:"Town of Harman Lots for Sale", text:"Edwin P. Harman begins selling lots for the new Town of Harman — the future Cherry Creek North."},
+        {year:"1886", title:"Town of Harman Incorporated", text:"Incorporated with ~300 residents. Brought upgraded streets and streetlights, but had no central water or sewer — it relied on the creek for irrigation and sewage dumping. Incorporation was seen as protection from Denver's 'tramps, bums and liquor traffic.'"}
+    ],
+    untold:{
+        title:"The Creek as Open Sewer",
+        text:"Cherry Creek itself was used as an open sewer and dumping channel for Denver. Irrigated farming, dairies, and orchards dominated the valley, all drawing water from the creek."
+    }
+},
+{
+    id:"d1886", year:"1886 – 1896", era:"Agriculture, Floods &amp; the Panic of 1893",
+    context:"Agriculture thrives, Denver grows, flood risk increases — and the worst U.S. economic crash before the Great Depression devastates Colorado.",
+    images:[
+        {src:"images/p008_img1.jpg", caption:"Castlewood Dam completed on upper Cherry Creek (1890)"},
+        {src:"images/p009_img1.jpg", caption:"The Cherry Creek area remained largely rural and undeveloped"},
+        {src:"images/p009_img2.jpg", caption:"Early trolley lines expanded access from downtown Denver"}
+    ],
+    events:[
+        {year:"1890", title:"Castlewood Dam Completed", text:"Built on upper Cherry Creek to irrigate 30,000 acres."},
+        {year:"1893–1894", title:"Financial Crisis of 1893", text:"A major U.S. economic depression triggered by railroad overexpansion, shaky financial practices, collapsing commodity prices, and a crisis of confidence in the gold reserves. It was the worst economic downturn until the Great Depression — and devastated silver-dependent Colorado."},
+        {year:"1894", title:"Harman Goes Bankrupt", text:"The Town of Harman went bankrupt and voted to be annexed by Denver, ending its short-lived independence."},
+        {title:"Early Trolley Lines", text:"Early trolley lines expanded access to the area, bringing a connection between downtown Denver and the newly annexed area now known as Cherry Creek. The Cherry Creek area remained largely rural — prone to flooding and erosion."}
+    ],
+    untold:{
+        title:"From Independent Town to Annexation",
+        text:"In just 8 years, Harman went from incorporated town to bankrupt and absorbed by Denver. The 1893 silver crash hit Colorado harder than almost any other state."
+    }
+},
+{
+    id:"d1896", year:"1896 – 1906", era:"Rural to Suburban Transition",
+    context:"Transition from rural to early suburban — but the creek remains unmanaged and the area continues to be defined by floods, dumping, and informal settlement.",
+    images:[
+        {src:"images/p011_img1.jpg", caption:"The Cherry Creek corridor: farms, shanties, and informal dumping"},
+        {src:"images/p012_img1.jpg", caption:"Early 1900s — Black Colony forms along the flood-prone creek"}
+    ],
+    events:[
+        {title:"Cherry Creek Corridor Continues as a Mix", text:"The corridor remained a mix of farms, shanties, and informal dumping."},
+        {title:"Denver Begins Early Flood Control Discussions", text:"...but takes no major action."},
+        {title:"Four Mile House Becomes Private Farmstead", text:"After the stagecoach era ended and was replaced by the railroad."},
+        {year:"Early 1900s", title:"Black 'Colony' Forms in Cherry Creek", text:"Excluded from desirable neighborhoods by segregation, Black families bought affordable land south of 1st Avenue along the flood-prone creek. Cherry Creek became one of Denver's early Black communities, alongside Five Points and Globeville."}
+    ],
+    untold:{
+        title:"Cherry Creek as a Founding Black Community",
+        text:"Long before its luxury reputation, Cherry Creek was home to one of Denver's earliest Black communities — families who built lasting roots along the flood-prone creek because segregation closed off every other option."
+    }
+},
+{
+    id:"d1906", year:"1906 – 1916", era:"Speer Boulevard &amp; the City Beautiful",
+    context:"Denver expands; Cherry Creek becomes increasingly degraded — but the City Beautiful movement begins reshaping the creek corridor.",
+    images:[
+        {src:"images/p013_img1.jpg", caption:"Speer Boulevard construction along Cherry Creek (1906–1918)"},
+        {src:"images/p014_img1.jpg", caption:"Bungalow and cinder-block housing grows along the creek"},
+        {src:"images/p015_img1.jpg", caption:"Contrast: grand Denver Country Club homes adjacent to bungalows"}
+    ],
+    events:[
+        {title:"Creek Channel Becomes Unstable", text:"Erosion and unregulated dumping degrade the channel."},
+        {title:"Land Speculation Begins", text:"Speculation begins around what will later become Cherry Creek North."},
+        {title:"Cherry Creek Identified as a Future Urban Corridor", text:"Denver planners begin identifying the creek as a future urban corridor."},
+        {year:"1906", title:"Harmon School Renamed Bromwell", text:"The school at 4th and Columbine takes the name still in use today."},
+        {year:"1906–1918", title:"Speer Boulevard Construction", text:"As part of Denver's City Beautiful Movement, Speer Boulevard was built along Cherry Creek. The creek was channelized, embankments stabilized, and ornamental features added."},
+        {title:"Bungalow &amp; Cinder-Block Housing Develops", text:"Small bungalow houses sprang up due to inexpensive land — prone to flooding and adjacent to a landfill. These houses stood in stark juxtaposition to the grand homes of Denver Country Club just west. The smaller housing was affordable for blue-collar workers and those denied loans by redlining policies that disadvantaged Black and poor immigrant communities."}
+    ],
+    untold:{
+        title:"Redlining Built the Two Cherry Creeks",
+        text:"The bungalow neighborhoods east of the creek and the grand Country Club homes west of it were built by the same forces — federal redlining and discriminatory lending that decided who could own where."
+    }
+},
+{
+    id:"d1916", year:"1916 – 1926", era:"The Buell Purchase &amp; the Klan Era",
+    context:"Agricultural uses begin to decline; aging infrastructure poses flood risk. Temple Buell purchases the land that will become the shopping mall — and Klan-era politics infiltrate Denver.",
+    images:[
+        {src:"images/p017_img1.jpg", caption:"1920s Black community life along Cherry Street and Downing"},
+        {src:"images/p018_img1.jpg", caption:"Lincoln Hills — Black resort area co-founded by Cherry Creek residents"}
+    ],
+    events:[
+        {title:"Castlewood Dam Shows Structural Issues", text:"Repairs are minimal — warnings ignored."},
+        {title:"Floodplain Increasingly Populated", text:"Despite warnings, Cherry Creek's floodplain continues to be developed."},
+        {title:"Denver Begins Park &amp; Parkway Planning", text:"Including the Cherry Creek corridor."},
+        {year:"1925", title:"Temple Hoyne Buell Purchases the Land", text:"Buell purchased the land at First Avenue &amp; University Boulevard — eventually a dump site, then the first shopping mall. At the time it was described as 'nothing but a weed-filled area.'"},
+        {year:"1920s", title:"Black Community Life", text:"Families like the Jacksons, Scotts, Morrisons, and Robinsons built tight-knit lives along Cherry Street and Downing. Residents kept gardens, chickens, and livestock; churches and extended families anchored the community despite environmental hazards from the dump and floods. <br><br><strong>5th Avenue in North Cherry Creek was once named Beckwourth Avenue</strong> after Jim Beckwourth — the former enslaved person who became a US Army trailblazer and co-founder of Pueblo, Colorado."},
+        {year:"1926", title:"The Jackson Family Arrives", text:"Nancelia Jackson's family moved to Garfield Street in 1926 — and her family continues to own that property to this very day."},
+        {title:"Klan-Era Denver Politics", text:"During the 1920s, Klan-era racism infiltrated the Denver political environment, resulting in exclusionary zoning, redlining, and racialized planning. Racist deed restrictions and covenants were common."}
+    ],
+    untold:{
+        title:"Lincoln Hills: A Mountain Refuge",
+        text:"Local Black residents helped found Lincoln Hills, a resort area west of Black Hawk that became one of the only mountain retreats welcoming people of color. It remains an exclusive resort for Black Denver residents to this day."
+    }
+},
+{
+    id:"d1926", year:"1926 – 1936", era:"The Dam Fails &amp; the Depression Hits",
+    context:"The decade that changes everything for Cherry Creek — Castlewood Dam fails, the stock market crashes, and the New Deal arrives.",
+    images:[
+        {src:"images/p020_img1.jpg", caption:"Castlewood Dam after the 1933 failure"},
+        {src:"images/p021_img1.jpg", caption:"WPA crews rebuild Denver and Cherry Creek infrastructure"}
+    ],
+    events:[
+        {year:"Aug 3, 1933", title:"Castlewood Dam Fails", text:"Flooding devastates the area when the Castlewood Dam fails, sending a 15–20 foot wall of water down Cherry Creek, sweeping homes, cattle, and people into the creek. 5,000 people were evacuated in Denver. The damage accelerated demand for a permanent flood-control solution."},
+        {title:"Federal Studies Begin", text:"Federal agencies begin studying the Cherry Creek Basin for a dam feasibility study."},
+        {year:"1929", title:"Stock Market Crash", text:"The crash plunged the country into the Great Depression. All of Temple Buell's plans to develop the property he acquired in 1925 were put on indefinite hold."},
+        {title:"The New Deal &amp; WPA", text:"The Works Progress Administration was enacted to put people to work during the Great Depression. WPA projects improved roads and bridges in Denver and the Cherry Creek areas."}
+    ],
+    untold:{
+        title:"Chief Little Raven Warned Them",
+        text:"Decades before Castlewood Dam failed, Arapaho leaders had warned settlers that the Cherry Creek floodplain was dangerous. The 1864 flood — and now 1933 — proved them right."
+    }
+},
+{
+    id:"d1936", year:"1936 – 1946", era:"Sand, War &amp; Unequal Recovery",
+    context:"The Buell land becomes a city dump, World War II reshapes the country, and the post-war boom begins — but its benefits are not distributed equally.",
+    images:[
+        {src:"images/p022_img1.jpg", caption:"Sand mining operations on the Buell land (1930s–1940s)"},
+        {src:"images/p023_img1.jpg", caption:"Returning WWII soldiers and the start of the post-war housing boom"}
+    ],
+    events:[
+        {year:"1930s–1940s", title:"Sand Mining &amp; the City Dump", text:"The land owned by Temple Buell was used as a sand mine, leaving a large mining pit. Buell turned it over to the City of Denver to be used as a sanitary landfill during the 1940s."},
+        {year:"1941–1945", title:"World War II", text:"WWII changed the direction of the country. Men from all walks of life signed up for military service; women took up service at home in unprecedented ways. Those at home hunkered down to support the war effort — keeping war gardens and consuming little."},
+        {year:"1946", title:"Post-War Era Begins", text:"Soldiers returning from war were able to build and buy housing through programs like the 1944 VA Loan Program. These programs spurred economic growth and urban sprawl — but were not granted equally."}
+    ],
+    untold:{
+        title:"The Unequal Post-War Boom",
+        text:"Black and Brown residents were largely excluded from VA loans and post-war housing programs. Combined with redlining and discrimination, this forced many longtime residents of color economically and socially out of the neighborhoods where they had been early residents."
+    }
+},
+{
+    id:"d1946", year:"1946 – 1956", era:"The Dam, the Mall &amp; the Modern Shopping Era",
+    context:"War era ends; planning for the dam intensifies. The Cherry Creek Shopping Center opens — and changes Denver retail forever.",
+    images:[
+        {src:"images/p025_img1.jpg", caption:"1950 — Cherry Creek Dam completed, ending the flood threat"},
+        {src:"images/p026_img1.jpg", caption:"1953 — Cherry Creek Shopping Center opens"},
+        {src:"images/p027_img1.jpg", caption:"Denver Dry Goods, Woolworth's, and Walgreens anchor the new mall"},
+        {src:"images/p028_img1.jpg", caption:"1955 — Sears arrives, with a pedestrian tunnel under 1st Avenue"},
+        {src:"images/p029_img1.jpg", caption:"Retail expansion north of 1st Avenue begins"}
+    ],
+    events:[
+        {title:"Army Corps Completes Dam Studies", text:"The U.S. Army Corps of Engineers completes engineering studies for a major flood-control dam."},
+        {title:"Land Acquisition Begins", text:"State land acquisition begins for what will become Cherry Creek Reservoir."},
+        {year:"1950", title:"Cherry Creek Dam Completed", text:"The 141-ft dam permanently protects Denver from catastrophic flooding."},
+        {title:"Buell Takes Back the Landfill", text:"The land Buell had turned over to the city was more valuable than ever thanks to the new Cherry Creek Dam eliminating the flood threat. Buell negotiated a deal to get the land back in exchange for cleanup and improvements."},
+        {year:"1949", title:"Buell Designs the First Mall", text:"Temple Buell designs the first shopping mall on the former sanitary landfill site."},
+        {year:"1950–1953", title:"Cherry Creek Shopping Center Opens", text:"Buell develops and builds the Cherry Creek outdoor shopping center — initially only a few buildings, with doors facing one another on a central plaza and parking on the exterior. This was groundbreaking for its time. The center expanded in 1953 with the Denver Dry Goods store, the project's main anchor."},
+        {year:"1955", title:"Sears Comes to Cherry Creek", text:"Sears built its store across the street on 1st Avenue and constructed a pedestrian tunnel for customers to travel safely back and forth under 1st Avenue. The tunnel served the retail district until it was closed in the early 1970s due to safety and maintenance issues."}
+    ],
+    untold:{
+        title:"From Landfill to Luxury",
+        text:"The most expensive shopping district in Colorado sits on land that was, within living memory, the City of Denver's sanitary landfill. Buell's vision turned trash into trade."
+    }
+},
+{
+    id:"d1956", year:"1956 – 1966", era:"The Modern Era Begins",
+    context:"Cherry Creek Reservoir fills, becomes Colorado's first state park, and proves the dam works in the 1965 South Platte flood.",
+    images:[],
+    events:[
+        {title:"Cherry Creek Reservoir Fills", text:"Becomes a major regional water and recreation asset."},
+        {year:"1959", title:"Cherry Creek State Recreation Area Established", text:"Colorado's first state park."},
+        {title:"Suburban Development Accelerates", text:"Around the reservoir and along the creek."},
+        {year:"1965", title:"South Platte Flood", text:"Cherry Creek Dam successfully contained upstream flow, preventing disaster and proving the area was free from the flooding risks that had plagued it in the past."},
+        {title:"Retail Expands North", text:"Shopping expanded north of 1st Avenue to 3rd Avenue, where smaller retailers set up in smaller buildings and renovated homes to become part of the retail fabric of the area."}
+    ],
+    untold:{
+        title:"Colorado's First State Park",
+        text:"The reservoir built to prevent another Castlewood Dam disaster became, by 1959, Colorado's first state park — a 4,200-acre testament to public engineering and recreation foresight."
+    }
+},
+{
+    id:"d1966", year:"1966 – 1976", era:"Cherry Creek North Transforms",
+    context:"Flood control proves its worth; Cherry Creek North begins shifting from residential to a commercial district.",
+    images:[
+        {src:"images/p032_img1.jpg", caption:"Early urban renewal reshapes Cherry Creek North"}
+    ],
+    events:[
+        {title:"Cherry Creek North Shifts to Commercial", text:"Cherry Creek North begins shifting from residential to a commercial district."},
+        {title:"Urban Renewal Reshapes the Area", text:"Early urban renewal efforts reshape the neighborhood."},
+        {title:"Denver Zoning Encourages Density", text:"Zoning changes encourage higher-density commercial development."}
+    ],
+    untold:{
+        title:"The Residential-to-Commercial Conversion",
+        text:"What had been single-family homes and rooming houses began their gradual conversion into the storefronts, boutiques, and offices that define Cherry Creek North today — a transition that displaced longtime residents."
+    }
+},
+{
+    id:"d1976", year:"1976 – 1986", era:"Cleanup, Pena &amp; the Master Plan",
+    context:"Redevelopment era; the landfill years end. Mayor Pena's 'Imagine a Great City' vision sets the stage for what's coming.",
+    images:[],
+    events:[
+        {title:"The Landfill Era Ends", text:"The remnants of Denver's municipal dump/landfill along Cherry Creek are closed. With a deal struck between the City and Temple Buell to clean up the land, it is transferred back to the Buell family (now the Buell Foundation) for further development."},
+        {title:"Planning for the Bigger, Better Mall", text:"Planning begins for a major enclosed regional shopping center on the newly cleaned-up land. The shopping center was part of Mayor Pena's 'Imagine a Great City' expansion — including Denver International Airport, the Colorado Convention Center, and getting a major baseball team."},
+        {title:"The First Area Plan is Adopted", text:"To guide development, Taubman (the new mall's developer) worked with stakeholders. Neighborhood input was critical — they pushed for storefronts (instead of the parking structure) to face 1st Avenue."},
+        {title:"Cherry Creek North Business Association Formed", text:"Formed by the CCN businesses to help them compete with the anticipated new shopping center. Mayor Pena encouraged developers to work with neighborhood stakeholders and the Cherry Creek Steering Committee to bring together a united vision. Taubman provided seed money to begin the process."}
+    ],
+    untold:{
+        title:"Neighbors at the Table",
+        text:"Cherry Creek's defining feature — small businesses living alongside a major mall — wasn't an accident. It was negotiated, parcel by parcel, by residents and shop owners who refused to be steamrolled by the developer."
+    }
+},
+{
+    id:"d1986", year:"1986 – 1996", era:"The Regional Destination Emerges",
+    context:"Cherry Creek becomes a regional destination. The CCN BID forms. The new Cherry Creek Shopping Center opens in 1990.",
+    images:[
+        {src:"images/p035_img1.jpg", caption:"1990 — New Cherry Creek Regional Shopping Center opens"},
+        {src:"images/p036_img1.jpg", caption:"Cherry Creek North streetscape unified by BID investment"}
+    ],
+    events:[
+        {title:"New Mall Expansion Planned", text:"Land assembly and planning for the Cherry Creek Shopping Center intensified. Cleanup of the former landfill commenced. Negotiations with area stakeholders began to secure the zoning needed."},
+        {year:"1989", title:"CCN BID is Formed", text:"Reeling from the early-'80s economic downturn, merchants and property owners in Cherry Creek North formed the Business Improvement District. The BID repaid an initial $11 million in City-sponsored bonds for streetscape improvements. Property owners agreed to a second annual assessment (~$400,000) to maintain the improvements and promote the district. This investment unified the 1st-to-3rd Avenue streetscape."},
+        {year:"1990", title:"New Cherry Creek Regional Shopping Center Opens", text:"Transforms the entire neighborhood into a premier retail hub. Given its proximity to downtown, the mall outperforms other suburban malls and becomes a major sales tax asset for the City. The older area was refreshed with new tenants like Bed Bath &amp; Beyond."}
+    ],
+    untold:{
+        title:"The BID That Built a District",
+        text:"A small group of CCN merchants betting their own money — and accepting a second annual tax assessment — created the unified streetscape that defines Cherry Creek North today. It was self-imposed investment, not city largesse."
+    }
+},
+{
+    id:"d1996", year:"1996 – 2006", era:"The Modern Commercial Core",
+    context:"The modern commercial core emerges with streetscape improvements, mixed-use development, and the Cherry Creek Trail.",
+    images:[
+        {src:"images/p038_img1.jpg", caption:"Cherry Creek Trail becomes a commuter and recreation corridor"}
+    ],
+    events:[
+        {title:"Major Streetscape Improvements", text:"Cherry Creek North undergoes major pedestrian and streetscape improvements."},
+        {title:"Mixed-Use Development Accelerates", text:"The area diversifies beyond retail."},
+        {title:"Cherry Creek Trail Becomes a Corridor", text:"The Cherry Creek Trail becomes a major commuter and recreation corridor — eventually growing to 40+ miles."}
+    ],
+    untold:{
+        title:"From Drainage Ditch to Destination Trail",
+        text:"The same creek that was an open sewer in 1886 is, by 2006, the spine of one of Denver's most beloved bike and pedestrian trails. The transformation took 120 years."
+    }
+},
+{
+    id:"d2006", year:"2006 – 2016", era:"Hotels, Rezoning &amp; the New Cherry Creek",
+    context:"Urbanization and environmental restoration. New hotels arrive. The 2012 Area Plan and 2014 BID Rezoning set the template for today's Cherry Creek.",
+    images:[
+        {src:"images/p039_img1.jpg", caption:"Cherry Creek Trail expanded and modernized"},
+        {src:"images/p040_img1.jpg", caption:"2004 — JW Marriott opens in Clayton Lane"},
+        {src:"images/p041_img1.jpg", caption:"2014 — BID rezoning enables billions in reinvestment"}
+    ],
+    events:[
+        {title:"Trail Expanded &amp; Modernized", text:"Cherry Creek Trail expanded and modernized; water quality and habitat restoration projects implemented along the creek."},
+        {title:"BID Invests in Branding &amp; Beautification", text:"Cherry Creek North BID invests in branding and beautification."},
+        {year:"June 2004", title:"Hotels Come to CCN", text:"The Nichols Partnership development brought the area its first full-service hotel — JW Marriott in a new development called Clayton Lane. Clayton Lane was instrumental in changing CCN by pushing Clayton Street through what was then the Sears automobile service center to 1st Avenue, connecting the residential neighborhood through the business district."},
+        {year:"2010", title:"Denver Zoning Code Changes", text:"Denver adopted a new 'form-based' zoning code. For Cherry Creek, the new zoning allowed denser development throughout — 3-story townhomes and duplexes, as well as mixed-use areas closer to the BID's retail areas."},
+        {year:"2012", title:"Cherry Creek Area Plan Adopted", text:"Residents and businesses worked together for over 2 years to finalize the vision. It informs development, transit, and future rezoning."},
+        {year:"2014", title:"CCN BID Rezoning", text:"Crafted to allow multiple heights stepping down toward the north residential area. On the winter solstice, the sun reaches the sidewalk along 3rd Avenue. The zoning has facilitated billions of dollars in reinvestment and resulted in a truly mixed-use area — high-end shopping, residential apartments, and condominiums."}
+    ],
+    untold:{
+        title:"The Winter Solstice Rule",
+        text:"Hidden inside the technical 2014 CCN rezoning is one of the most poetic land-use rules in Denver: building heights step down so that, on the winter solstice — the year's shortest day — the sun still reaches the sidewalk along 3rd Avenue."
+    }
+},
+{
+    id:"d2016", year:"2016 – 2026", era:"Luxury Boom &amp; the West Rezoning",
+    context:"Luxury boom and reinvestment. Affordability becomes a defining challenge. The Cherry Creek West rezoning sets the next chapter.",
+    images:[
+        {src:"images/p042_img1.jpg", caption:"Luxury hotels — Halcyon, Jacquard — open in Cherry Creek"},
+        {src:"images/p043_img1.jpg", caption:"Cherry Creek North becomes one of Denver's highest-value districts"},
+        {src:"images/p044_img1.jpg", caption:"2025 — Cherry Creek West rezoning approved"},
+        {src:"images/p045_img1.jpg", caption:"2026 — Groundbreaking on the largest single development in the area"}
+    ],
+    events:[
+        {title:"Streetscape &amp; Public-Space Reinvestment", text:"Major reinvestment in Cherry Creek North streetscapes and public spaces."},
+        {title:"Luxury Hotels Open", text:"Halcyon, Jacquard, and other luxury hotels open. Continued densification with high-end residential towers."},
+        {title:"Climate Planning", text:"Climate-driven water and drought planning affects Cherry Creek watershed management."},
+        {title:"Highest-Value Commercial District", text:"Cherry Creek North becomes one of Denver's highest-value commercial districts."},
+        {title:"Expensive &amp; Unaffordable for Many", text:"With land costs skyrocketing due to rezoning and redevelopment, Cherry Creek has become one of Denver's more expensive neighborhoods. Efforts to include affordable housing and even affordable retail have been discussed, but those who once could afford the neighborhood are now priced out."},
+        {year:"2025", title:"Cherry Creek West Rezoning", text:"The last part of the Buell Foundation property — 13+ acres on the west side, home to the original mall and the Denver Dry Goods store — was rezoned in 2025 to include 7 buildings (residential and office) with an average height of 10.5 stories."},
+        {year:"2026", title:"Groundbreaking on Cherry Creek West", text:"The project broke ground in 2026 and will be the largest single development in the area, changing the landscape and neighborhood in much the same way the original shopping mall changed the trajectory of the entire neighborhood."}
+    ],
+    untold:{
+        title:"150 Years, Two Bookends",
+        text:"Cherry Creek's 150-year journey is bookended by displacement and reinvention: in 1886 it was farmers, the dispossessed, and an open sewer; in 2026 it is luxury hotels, billion-dollar zoning, and longtime residents priced out. The cycle continues — and so does the untold story."
+    }
+}
+];
+
+/* ── RENDER NAV ── */
+const nav = document.getElementById('nav');
+D.forEach(d=>{
+    const b = document.createElement('button');
+    b.className = 'nav-btn';
+    b.textContent = d.id === 'pretext' ? 'Pre-1876' : d.year.replace(/\s*–\s*/,'–');
+    b.dataset.id = d.id;
+    b.onclick = ()=>document.getElementById(d.id).scrollIntoView({behavior:'smooth'});
+    nav.appendChild(b);
+});
+const shareBtn = document.createElement('button');
+shareBtn.className = 'nav-btn';
+shareBtn.textContent = 'Share / QR';
+shareBtn.dataset.id = 'share';
+shareBtn.onclick = ()=>document.getElementById('share').scrollIntoView({behavior:'smooth'});
+nav.appendChild(shareBtn);
+
+/* ── RENDER SECTIONS ── */
+const main = document.getElementById('main');
+D.forEach(d=>{
+    const s = document.createElement('section');
+    s.className = 'decade' + (d.id === 'pretext' ? ' pretext' : '');
+    s.id = d.id;
+
+    const eyebrow = d.id === 'pretext' ? 'Pretext' : 'Chapter';
+    const colsClass = d.images.length === 1 ? 'cols-1' : d.images.length === 2 ? 'cols-2' : 'cols-3';
+
+    const imagesHtml = d.images.length ? `
+        <div class="image-grid ${colsClass}">
+            ${d.images.map(img=>`
+                <figure class="img-card">
+                    <img src="${img.src}" alt="${img.caption}" loading="lazy">
+                    <figcaption class="img-caption">${img.caption}</figcaption>
+                </figure>
+            `).join('')}
+        </div>
+    ` : '';
+
+    const eventsHtml = d.events.map(e=>`
+        <div class="event">
+            ${e.title ? `<span class="event-title">${e.year ? `<span class="event-year">${e.year}</span>` : ''}${e.title}</span>` : ''}
+            <span class="event-text">${e.text}</span>
+        </div>
+    `).join('');
+
+    s.innerHTML = `
+        <div class="decade-eyebrow">${eyebrow}</div>
+        <h2 class="decade-year">${d.year}</h2>
+        <p class="decade-era">${d.era}</p>
+        <div class="decade-divider">
+            <span class="line"></span><span class="diamond"></span><span class="diamond"></span><span class="line"></span>
+        </div>
+        <p class="decade-context">${d.context}</p>
+        ${imagesHtml}
+        <div class="content-grid">
+            <div class="major-events">
+                <h3>Major Events</h3>
+                ${eventsHtml}
+            </div>
+            <aside class="untold">
+                <div class="untold-label">The Untold Story</div>
+                <h4>${d.untold.title}</h4>
+                <p>${d.untold.text}</p>
+            </aside>
+        </div>
+    `;
+    main.appendChild(s);
+});
+
+/* ── ACTIVE NAV ON SCROLL ── */
+const obs = new IntersectionObserver(es=>{
+    es.forEach(e=>{
+        if(e.isIntersecting){
+            document.querySelectorAll('.nav-btn').forEach(b=>
+                b.classList.toggle('active', b.dataset.id === e.target.id));
+        }
+    });
+},{threshold:.15});
+document.querySelectorAll('section.decade, section.qr-section').forEach(s=>obs.observe(s));
+
+/* ── QR CODE ── */
+const QR_URL = "https://gaddirubio.github.io/CherryCreek150/CC150-Untold-Story.html";
+document.getElementById('qr-url-display').textContent = QR_URL;
+new QRCode(document.getElementById('qrcode'), {
+    text: QR_URL,
+    width: 200, height: 200,
+    colorDark: "#1A1A1A",
+    colorLight: "#ffffff",
+    correctLevel: QRCode.CorrectLevel.H
+});
+</script>
+</body>
+</html>
